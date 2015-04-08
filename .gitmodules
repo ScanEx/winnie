@@ -4,3 +4,6 @@
 [submodule "external/gmxControls"]
 	path = external/gmxControls
 	url = git@github.com:ScanEx/gmxControls.git
+[submodule "external/Leaflet.TileLayer.Mercator"]
+	path = external/Leaflet.TileLayer.Mercator
+	url = git@github.com:ScanEx/Leaflet.TileLayer.Mercator.git
