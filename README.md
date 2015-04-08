@@ -13,6 +13,12 @@ Simple way to publish [Leaflet](http://leaflet.js) and [GeoMixer](http://geomixe
   - Bookmarks on the map
   - Balloon fotogallery
 
+###Examples
+
+###License
+
+###Getting started
+
 ###Описание
 Простой способ создавать картографические приложения на основе [Leaflet](http://leaflet.js) и [GeoMixer](http://geomixer.ru), используя набор готовых контролов и виджетов
 
@@ -31,3 +37,9 @@ Simple way to publish [Leaflet](http://leaflet.js) and [GeoMixer](http://geomixe
 - Строка поиска по адресам или координатам
 - Добавление пользовательских объектов на карту
 - Сохранение пермалинков
+
+###Примеры
+
+###Лицензия
+
+###Начало работы
