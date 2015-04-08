@@ -13,3 +13,6 @@
 [submodule "external/GMXBuilder"]
 	path = external/GMXBuilder
 	url = git@github.com:ScanEx/GMXBuilder.git
+[submodule "external/GMXCommonComponents"]
+	path = external/GMXCommonComponents
+	url = git@github.com:ScanEx/GMXCommonComponents.git
