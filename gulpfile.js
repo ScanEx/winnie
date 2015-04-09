@@ -76,6 +76,12 @@ require('./external/GMXBuilder')(gulp, {
 }, {
     id: 'editor',
     components: [{
+        bowerComponent: 'jquery',
+        distFiles: ['dist/jquery.js']
+    }, {
+        bowerComponent: 'handlebars',
+        distFiles: ['handlebars.js']
+    }, {
         id: 'ace-builds',
         bowerComponent: 'git@github.com:ajaxorg/ace-builds.git',
         distFiles: [
@@ -84,6 +90,19 @@ require('./external/GMXBuilder')(gulp, {
             './src/mode-json.js',
             './src/theme-chrome.js'
         ]
+    }, {
+        id: 'CommonStyles',
+        srcDir: './external/GMXCommonComponents/CommonStyles',
+        distDir: './build',
+        build: true
+    }, {
+        id: 'ComponentsManager',
+        srcDir: './external/GMXCommonComponents/ComponentsManager'
+    }, {
+        id: 'DropdownMenuWidget',
+        srcDir: './external/GMXCommonComponents/DropdownMenuWidget',
+        distDir: './build',
+        build: true
     }, {
         id: 'editor',
         srcDir: './editor'
