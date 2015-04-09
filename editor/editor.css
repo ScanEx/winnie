@@ -1,11 +1,14 @@
 html, body { padding: 0; margin: 0; width: 100%; height: 100%; }
 body { font-family: 'Roboto'; }
+body .ui-widget { font-family: 'Roboto'; }
 
-.editor-editorFrame { position: absolute; top: 40px; bottom: 0; left: 0; width: 500px; height: 100%;}
-.editor-editorFrame { border-right: 1px solid #f0f0f0; }
+.editor-sidebarFrame { position: absolute; top: 0; bottom: 0; left: 0; width: 500px; overflow: hidden; }
 
-.editor-toolbarFrame { position: absolute; top: 0; left: 0; width: 500px; height: 40px;}
-.editor-toolbarFrame { border-right: 1px solid #f0f0f0; background-color: #f7f7f7; }
+.editor-codeFrame { position: absolute; top: 40px; bottom: 0; left: 0; right: 0; }
+.editor-codeFrame { border-right: 1px solid #f0f0f0; }
+
+.editor-toolbarFrame { position: absolute; top: 0; left: 0; right: 0; height: 40px;}
+.editor-toolbarFrame { border-right: 1px solid #f0f0f0; background-color: #ebebeb; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
 .editor-toolbarFrame .dropdownMenuWidget { height: 100%; }
 .editor-toolbarFrame .dropdownMenuWidget-item { font-size: 14px; }
 .editor-toolbarFrame .dropdownMenuWidget-item:hover { background: rgba(0, 0, 0, 0.05); }
@@ -13,3 +16,6 @@ body { font-family: 'Roboto'; }
 
 .toolbar { margin: 0; padding: 0; list-style-type: none; }
 .toolbar-item { display: inline-block; }
+
+.editor-toolbarFrame { z-index: 20; }
+.editor-codeFrame { z-index: 10; }
