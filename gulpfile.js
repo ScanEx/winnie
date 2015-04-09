@@ -1,10 +1,31 @@
 var gulp = require('gulp');
 var path = require('path');
 
-var applicationConstrucorComponents = [{
+var jquery = {
+    bowerComponent: 'jquery',
+    distFiles: ['dist/jquery.js']
+};
+
+var handlebars = {
+    bowerComponent: 'handlebars',
+    distFiles: ['handlebars.js']
+};
+
+var aceEditor = {
+    id: 'ace-builds',
+    bowerComponent: 'git@github.com:ajaxorg/ace-builds.git',
+    distFiles: [
+        './src/ace.js',
+        './src/worker-json.js',
+        './src/mode-json.js',
+        './src/theme-chrome.js'
+    ]
+};
+
+var leaflet = {
     bowerComponent: 'leaflet',
     distFiles: [
-        'dist/leaflet.js',
+        'dist/leaflet-src.js',
         'dist/leaflet.css',
         'dist/images/layers.png',
         'dist/images/layers-2x.png',
@@ -12,19 +33,25 @@ var applicationConstrucorComponents = [{
         'dist/images/marker-icon-2x.png',
         'dist/images/marker-shadow.png'
     ]
-}, {
+};
+
+var leafletGeomixer = {
     id: 'Leaflet-GeoMixer',
     srcDir: './external/Leaflet-GeoMixer',
     distFiles: ['./dist/leaflet-geomixer-src.js'],
     build: true,
     watch: false
-}, {
+};
+
+var tileLayerMercator = {
     id: 'Leaflet.TileLayer.Mercator',
     srcDir: './external/Leaflet.TileLayer.Mercator',
     distFiles: ['./src/TileLayer.Mercator.js'],
     build: false,
     watch: false
-}, {
+};
+
+var gmxBaseLayersManager = {
     id: 'Leaflet.gmxBaseLayersManager',
     srcDir: './external/Leaflet.gmxBaseLayersManager',
     distFiles: [
@@ -33,7 +60,9 @@ var applicationConstrucorComponents = [{
     ],
     build: false,
     watch: false
-}, {
+};
+
+var gmxControls = {
     id: 'gmxControls',
     srcDir: './external/gmxControls',
     distFiles: [
@@ -47,18 +76,49 @@ var applicationConstrucorComponents = [{
     ],
     build: true,
     watch: false
-}, {
+};
+
+var baseLayersControl = {
     id: 'BaseLayersControl',
     srcDir: './external/GMXCommonComponents/BaseLayersControl',
     distDir: 'build',
     build: true
-}, {
+};
+
+var componentsManager = {
     id: 'ComponentsManager',
     srcDir: './external/GMXCommonComponents/ComponentsManager'
-}, {
+};
+
+var applicationConstructor = {
     id: 'ApplicationConstructor',
     srcDir: './external/GMXCommonComponents/ApplicationConstructor'
-}]
+};
+
+var commonStyles = {
+    id: 'CommonStyles',
+    srcDir: './external/GMXCommonComponents/CommonStyles',
+    distDir: './build',
+    build: true
+};
+
+var dropdownMenuWidget = {
+    id: 'DropdownMenuWidget',
+    srcDir: './external/GMXCommonComponents/DropdownMenuWidget',
+    distDir: './build',
+    build: true
+};
+
+var applicationConstrucorComponents = [
+    leaflet,
+    leafletGeomixer,
+    tileLayerMercator,
+    gmxBaseLayersManager,
+    gmxControls,
+    baseLayersControl,
+    componentsManager,
+    applicationConstructor
+];
 
 require('./external/GMXBuilder')(gulp, {
     tempDir: './temp',
@@ -75,36 +135,14 @@ require('./external/GMXBuilder')(gulp, {
     }])
 }, {
     id: 'editor',
-    components: [{
-        bowerComponent: 'jquery',
-        distFiles: ['dist/jquery.js']
-    }, {
-        bowerComponent: 'handlebars',
-        distFiles: ['handlebars.js']
-    }, {
-        id: 'ace-builds',
-        bowerComponent: 'git@github.com:ajaxorg/ace-builds.git',
-        distFiles: [
-            './src/ace.js',
-            './src/worker-json.js',
-            './src/mode-json.js',
-            './src/theme-chrome.js'
-        ]
-    }, {
-        id: 'CommonStyles',
-        srcDir: './external/GMXCommonComponents/CommonStyles',
-        distDir: './build',
-        build: true
-    }, {
-        id: 'ComponentsManager',
-        srcDir: './external/GMXCommonComponents/ComponentsManager'
-    }, {
-        id: 'DropdownMenuWidget',
-        srcDir: './external/GMXCommonComponents/DropdownMenuWidget',
-        distDir: './build',
-        build: true
-    }, {
-        id: 'editor',
-        srcDir: './editor'
-    }]
+    components: applicationConstrucorComponents.concat([
+        jquery,
+        handlebars,
+        aceEditor,
+        commonStyles,
+        dropdownMenuWidget, {
+            id: 'editor',
+            srcDir: './editor'
+        }
+    ])
 }]);

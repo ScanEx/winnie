@@ -29,19 +29,49 @@
         editor.setTheme("ace/theme/chrome");
         editor.getSession().setMode("ace/mode/json");
         editor.setValue(JSON.stringify(cm.get('sampleconfig'), null, '    '));
+        editor.selection.clearSelection();
         return editor;
     });
 
     cm.define('toolbar', [], function(cm) {
         var dropdownMenuWidget = new nsGmx.DropdownMenuWidget({
             items: [{
-                title: 'Refresh'
+                title: 'Refresh',
+                id: 'btn-refresh'
             }, {
-                title: 'Permalink'
+                title: 'Permalink',
+                id: 'btn-permalink'
             }]
         });
         dropdownMenuWidget.appendTo($('.editor-toolbarFrame'));
         return dropdownMenuWidget;
+    });
+
+    cm.define('viewer', ['toolbar', 'editor'], function(cm) {
+        var editor = cm.get('editor');
+        var $container = $('.editor-mapFrame');
+
+        var update = function() {
+            try {
+                var cfg = JSON.parse(editor.getValue());
+                $container.empty();
+                var $mapContainer = $('<div>')
+                    .css('position', 'relative')
+                    .css('width', '100%')
+                    .css('height', '100%');
+                $container.append($mapContainer);
+                nsGmx.createMapApplication($mapContainer.get(0), cfg).create();
+            } catch (e) {
+                console.log('invalid JSON');
+            }
+        };
+
+        $container.empty();
+        update();
+        $('#btn-refresh').click(function() {
+            update();
+        });
+        return null;
     });
 
     cm.create();
