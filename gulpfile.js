@@ -73,4 +73,19 @@ require('./external/GMXBuilder')(gulp, {
         id: 'viewer',
         srcDir: './viewer'
     }])
+}, {
+    id: 'editor',
+    components: [{
+        id: 'ace-builds',
+        bowerComponent: 'git@github.com:ajaxorg/ace-builds.git',
+        distFiles: [
+            './src/ace.js',
+            './src/worker-json.js',
+            './src/mode-json.js',
+            './src/theme-chrome.js'
+        ]
+    }, {
+        id: 'editor',
+        srcDir: './editor'
+    }]
 }]);
