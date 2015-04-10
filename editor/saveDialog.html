@@ -1,0 +1,14 @@
+<div class="editor-dialog editor-saveDialog ui-widget">
+    {{#if permalink}}
+        <div class="gmx-table editor-dialog-row editor-dialog-row_bottom">
+            <div class="gmx-table-cell editor-saveDialog-permalinkCell">
+                <input class="gmx-input-text gmx-input-text_maxwidth" value="{{permalink}}" />
+            </div>
+            <div class="gmx-table-cell editor-saveDialog-openIconCell">
+                <a href="{{permalink}}" target="_blank"><i class="icon-link-ext-alt"></i></a>
+            </div>
+        </div>
+    {{else}}
+        creating permalink..
+    {{/if}}
+</div>

@@ -1,4 +1,12 @@
 (function() {
+    cm.define('mapsResourceServer', [], function() {
+        return nsGmx.Auth.getResourceServer('geomixer');
+    });
+
+    cm.define('authManager', ['mapsResourceServer'], function() {
+        return nsGmx.Auth.getAuthManager();
+    });
+
     cm.define('sampleconfig', [], function() {
         return {
             map: {
@@ -39,8 +47,8 @@
                 title: 'Refresh',
                 id: 'btn-refresh'
             }, {
-                title: 'Permalink',
-                id: 'btn-permalink'
+                title: 'Save',
+                id: 'btn-save'
             }]
         });
         dropdownMenuWidget.appendTo($('.editor-toolbarFrame'));
@@ -66,12 +74,62 @@
             }
         };
 
-        $container.empty();
         update();
         $('#btn-refresh').click(function() {
             update();
         });
-        return null;
+        return {
+            update: update
+        };
+    });
+
+    cm.define('saveButton', ['toolbar', 'editor', 'mapsResourceServer'], function(cm) {
+        var jsonIsValid = function() {
+            try {
+                JSON.parse(editor.getValue());
+                return true;
+            } catch (e) {
+                return false;
+            }
+        };
+
+        var editor = cm.get('editor');
+        var mapsResourceServer = cm.get('mapsResourceServer');
+
+        $('#btn-save').popover({
+            content: '<div id="popover-save"></div>',
+            container: 'body',
+            placement: 'bottom',
+            html: true
+        });
+
+        $('#btn-save').on('shown.bs.popover', function() {
+            var origin = window.location.search ?
+                window.location.href.slice(0, window.location.href.indexOf(window.location.search)) :
+                window.location.href;
+
+            $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
+                permalink: false
+            }));
+
+            if (jsonIsValid()) {
+                mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
+                    content: editor.getValue()
+                }).then(function(response) {
+                    $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
+                        permalink: origin.replace('editor.html', 'viewer.html') + '?config=' + response.Result
+                    }));
+                }).fail(function() {
+                    $('#popover-save').html('unknown error');
+                });
+            } else {
+                $('#popover-save').html('invalid json');
+            }
+        });
+
+        $('#btn-save').on('hide.bs.popover', function() {
+            $('#popover-save').empty();
+        });
     });
 
     cm.create();

@@ -24,3 +24,16 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-codeFrame { z-index: 30; }
 .editor-sidebarFrame { z-index: 20; }
 .editor-mapFrame { z-index: 10; }
+
+.editor-dialog { padding: 6px 8px; }
+.popover .editor-dialog { padding: 0; }
+.editor-dialog-title { font-weight: bold; font-size: 12px; }
+.editor-dialog-row { padding-bottom: 8px; width: 100%; }
+.editor-dialog-row_bottom { padding-bottom: 0px; }
+.editor-dialog button.mfp-close { width: 28px; height: 28px; line-height: 20px; font-size: 14px; }
+
+.editor-saveDialog-permalinkCell { width: 100%; }
+.editor-saveDialog-openIconCell { font-size: 14px; padding-left: 6px; }
+.editor-saveDialog-openIconCell a { color: #3a3a3a; text-decoration: none; }
+.editor-saveDialog-openIconCell a:hover { color: #000000; }
+#popover-save { width: 250px; }

@@ -109,6 +109,20 @@ var dropdownMenuWidget = {
     build: true
 };
 
+var popover = {
+    id: 'Popover',
+    srcDir: './external/GMXCommonComponents/Popover',
+    distDir: './build',
+    build: true
+};
+
+var authManager = {
+    id: 'AuthManager',
+    srcDir: './external/GMXCommonComponents/AuthManager',
+    distDir: './build',
+    build: true
+}
+
 var applicationConstrucorComponents = [
     leaflet,
     leafletGeomixer,
@@ -140,9 +154,13 @@ require('./external/GMXBuilder')(gulp, {
         handlebars,
         aceEditor,
         commonStyles,
-        dropdownMenuWidget, {
+        dropdownMenuWidget,
+        popover, 
+        authManager, {
             id: 'editor',
-            srcDir: './editor'
+            srcDir: './editor',
+            distDir: './build',
+            build: true
         }
     ])
 }]);
