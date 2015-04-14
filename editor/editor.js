@@ -59,6 +59,7 @@
         var editor = cm.get('editor');
         var $container = $('.editor-mapFrame');
 
+        var cm;
         var update = function() {
             try {
                 var cfg = JSON.parse(editor.getValue());
@@ -79,7 +80,10 @@
             update();
         });
         return {
-            update: update
+            update: update,
+            getCm: function() {
+                return cm;
+            }
         };
     });
 
@@ -135,15 +139,26 @@
 
     cm.define('collapseCodeButton', ['viewer'], function() {
         var viewer = cm.get('viewer');
-        var $editorView = $('.editor');
+        var $mapView = $('.editor-mapFrame');
+        var $sidebarView = $('.editor-sidebarFrame');
         var $buttonView = $('.editor-collapseCodeButton');
         var toggle = function() {
-            $buttonView.toggleClass('icon-angle-left', !$editorView.hasClass('editor_sidebarCollapsed'));
-            $buttonView.toggleClass('icon-angle-right', $editorView.hasClass('editor_sidebarCollapsed'));
-            viewer.update();
+            $buttonView.toggleClass('icon-angle-left', !$sidebarView.hasClass('editor_sidebarCollapsed'));
+            $buttonView.toggleClass('icon-angle-right', $sidebarView.hasClass('editor_sidebarCollapsed'));
+            viewer.getCm().get('map') && viewer.getCm().get('map').invalidateSize();
         };
+        $sidebarView.on('transitionend', function(je) {
+            if (je.originalEvent.propertyName === 'width') {
+                if (!$sidebarView.hasClass('editor_sidebarCollapsed')) {
+                    $mapView.removeClass('editor_sidebarCollapsed');
+                }
+            }
+        });
         $buttonView.on('click', function() {
-            $editorView.toggleClass('editor_sidebarCollapsed');
+            $sidebarView.toggleClass('editor_sidebarCollapsed');
+            if ($sidebarView.hasClass('editor_sidebarCollapsed')) {
+                $mapView.addClass('editor_sidebarCollapsed');
+            }
             toggle();
         });
         toggle();
