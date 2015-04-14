@@ -26,8 +26,9 @@
             oReq.onload = function(e) {
                 if (e.currentTarget.readyState === 4 && e.currentTarget.status === 200) {
                     try {
-                        var resp = JSON.parse(e.currentTarget.response.slice(1, -1));
-                        var cfg = JSON.parse(resp.Result);
+                        var rt = e.currentTarget.response || e.currentTarget.responseText;
+                        var jr = JSON.parse(rt.slice(1, -1));
+                        var cfg = JSON.parse(jr.Result);
                         cb(cfg);
                     } catch (e) {
                         console.warn('invalid JSON');
@@ -54,7 +55,7 @@
     cm.define('mapApplicationConstructor', ['layoutManager', 'config'], function(cm, cb) {
         var config = cm.get('config');
         var layoutManager = cm.get('layoutManager');
-        var macm = nsGmx.createMapApplication(layoutManager.getMapContainer(), config)
+        var macm = nsGmx.createGmxApplication(layoutManager.getMapContainer(), config)
         macm.create().then(function() {
             cb(macm);
         });

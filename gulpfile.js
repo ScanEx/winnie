@@ -6,10 +6,20 @@ var jquery = {
     distFiles: ['dist/jquery.js']
 };
 
+var underscore = {
+    bowerComponent: 'underscore',
+    distFiles: ['underscore.js']
+}
+
 var handlebars = {
     bowerComponent: 'handlebars',
     distFiles: ['handlebars.js']
 };
+
+var backbone = {
+    bowerComponent: 'backbone',
+    distFiles: ['backbone.js']
+}
 
 var aceEditor = {
     id: 'ace-builds',
@@ -121,16 +131,48 @@ var authManager = {
     srcDir: './external/GMXCommonComponents/AuthManager',
     distDir: './build',
     build: true
+};
+
+var thorax = {
+    id: 'Thorax',
+    srcDir: './external/GMXCommonComponents/Thorax',
+    distFiles: [
+        './thorax.js'
+    ],
+    build: false,
+    watch: false
 }
 
-var applicationConstrucorComponents = [
+var layersTree = {
+    id: 'LayersTree',
+    srcDir: './external/GMXCommonComponents/LayersTree',
+    distDir: './build',
+    build: true
+};
+
+var storytellingWidget = {
+    id: 'StorytellingWidget',
+    srcDir: './external/GMXCommonComponents/StorytellingWidget',
+    distDir: './build',
+    build: true
+};
+
+var applicationConstructorComponents = [
+    jquery,
+    handlebars,
+    underscore,
+    backbone,
+    thorax,
     leaflet,
     leafletGeomixer,
     tileLayerMercator,
     gmxBaseLayersManager,
     gmxControls,
+    layersTree,
+    commonStyles,
     baseLayersControl,
     componentsManager,
+    storytellingWidget,
     applicationConstructor
 ];
 
@@ -140,22 +182,19 @@ require('./external/GMXBuilder')(gulp, {
     watchExtensions: ['.js', '.css', '.html', '.less', '.svg']
 }, [{
     id: 'gmxApplicationConstructor',
-    components: applicationConstrucorComponents
+    components: applicationConstructorComponents
 }, {
     id: 'viewer',
-    components: applicationConstrucorComponents.concat([{
+    components: applicationConstructorComponents.concat([{
         id: 'viewer',
         srcDir: './viewer'
     }])
 }, {
     id: 'editor',
-    components: applicationConstrucorComponents.concat([
-        jquery,
-        handlebars,
+    components: applicationConstructorComponents.concat([
         aceEditor,
-        commonStyles,
         dropdownMenuWidget,
-        popover, 
+        popover,
         authManager, {
             id: 'editor',
             srcDir: './editor',

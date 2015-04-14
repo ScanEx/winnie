@@ -21,6 +21,9 @@
             hideControl: false,
             centerControl: {
                 color: '#121212'
+            },
+            storytellingWidget: {
+
             }
         };
     });
@@ -69,7 +72,8 @@
                     .css('width', '100%')
                     .css('height', '100%');
                 $container.append($mapContainer);
-                nsGmx.createMapApplication($mapContainer.get(0), cfg).create();
+                cm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
+                cm.create();
             } catch (e) {
                 console.log('invalid JSON');
             }
