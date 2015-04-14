@@ -2,24 +2,34 @@ html, body { padding: 0; margin: 0; width: 100%; height: 100%; }
 body { font-family: 'Roboto'; }
 body .ui-widget { font-family: 'Roboto'; }
 
+.editor { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+
 .editor-sidebarFrame { position: absolute; top: 0; bottom: 0; left: 0; width: 500px; overflow: hidden; }
 .editor-sidebarFrame { box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
+.editor_sidebarCollapsed .editor-sidebarFrame { display: none; }
 
 .editor-codeFrame { position: absolute; top: 40px; bottom: 0; left: 0; right: 0; }
 .editor-codeFrame { border-right: 1px solid #f0f0f0; }
 
-.editor-toolbarFrame { position: absolute; top: 0; left: 0; right: 0; height: 40px;}
+.editor-collapseCodeButton { position: absolute; top: 50%; left: 0; width: 26px; height: 26px; margin-top: -13px; }
+.editor-collapseCodeButton { box-shadow: 0 0 10px rgba(0,0,0,0.25); background-color: #ffffff; border-radius: 0 5px 5px 0; font-size: 20px; cursor: pointer; }
+.editor-collapseCodeButton { -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+.editor-collapseCodeButton:before { margin: 3px 1px; }
+
+.editor-toolbarFrame { position: absolute; top: 0; left: 0; right: 0; height: 40px; }
 .editor-toolbarFrame { border-right: 1px solid #f0f0f0; background-color: #ebebeb; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
 .editor-toolbarFrame .dropdownMenuWidget { height: 100%; }
 .editor-toolbarFrame .dropdownMenuWidget-item { font-size: 14px; }
 .editor-toolbarFrame .dropdownMenuWidget-item:hover { background: rgba(0, 0, 0, 0.05); }
 .editor-toolbarFrame .dropdownMenuWidget-item a { color: #424242; }
 
-.editor-mapFrame { position: absolute; top: 0; bottom: 0; left: 500px; right: 0; }
+.editor-mapFrame { position: absolute; top: 0; bottom: 0; left: 500px; right: 0; overflow: hidden; }
+.editor_sidebarCollapsed .editor-mapFrame { left: 0; }
 
 .toolbar { margin: 0; padding: 0; list-style-type: none; }
 .toolbar-item { display: inline-block; }
 
+.editor-collapseCodeButton { z-index: 50; }
 .editor-toolbarFrame { z-index: 40; }
 .editor-codeFrame { z-index: 30; }
 .editor-sidebarFrame { z-index: 20; }

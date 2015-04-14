@@ -130,6 +130,24 @@
         $('#btn-save').on('hide.bs.popover', function() {
             $('#popover-save').empty();
         });
+        return true;
+    });
+
+    cm.define('collapseCodeButton', ['viewer'], function() {
+        var viewer = cm.get('viewer');
+        var $editorView = $('.editor');
+        var $buttonView = $('.editor-collapseCodeButton');
+        var toggle = function() {
+            $buttonView.toggleClass('icon-angle-left', !$editorView.hasClass('editor_sidebarCollapsed'));
+            $buttonView.toggleClass('icon-angle-right', $editorView.hasClass('editor_sidebarCollapsed'));
+            viewer.update();
+        };
+        $buttonView.on('click', function() {
+            $editorView.toggleClass('editor_sidebarCollapsed');
+            toggle();
+        });
+        toggle();
+        return true;
     });
 
     cm.create();
