@@ -141,21 +141,26 @@
         return true;
     });
 
-    cm.define('collapseCodeButton', ['viewer'], function() {
+    cm.define('collapseButton', ['viewer', 'editor'], function() {
         var viewer = cm.get('viewer');
+        var editor = cm.get('editor');
         var $mapView = $('.editor-mapFrame');
         var $sidebarView = $('.editor-sidebarFrame');
-        var $buttonView = $('.editor-collapseCodeButton');
-        var toggle = function() {
+        var $buttonView = $('.editor-collapseButton');
+        var toggleButtonState = function() {
             $buttonView.toggleClass('icon-angle-left', !$sidebarView.hasClass('editor_sidebarCollapsed'));
             $buttonView.toggleClass('icon-angle-right', $sidebarView.hasClass('editor_sidebarCollapsed'));
+        };
+        var kickMap = function() {
             viewer.getCm().get('map') && viewer.getCm().get('map').invalidateSize();
+            editor.resize();
         };
         $sidebarView.on('transitionend', function(je) {
             if (je.originalEvent.propertyName === 'width') {
                 if (!$sidebarView.hasClass('editor_sidebarCollapsed')) {
                     $mapView.removeClass('editor_sidebarCollapsed');
                 }
+                kickMap();
             }
         });
         $buttonView.on('click', function() {
@@ -163,9 +168,10 @@
             if ($sidebarView.hasClass('editor_sidebarCollapsed')) {
                 $mapView.addClass('editor_sidebarCollapsed');
             }
-            toggle();
+            toggleButtonState();
+            kickMap();
         });
-        toggle();
+        toggleButtonState();
         return true;
     });
 
