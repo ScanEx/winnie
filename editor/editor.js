@@ -8,11 +8,47 @@
     });
 
     cm.define('layoutManager', [], function(cm) {
-        return {
-            getContainer: function() {
-                return $('.editor');
+        var $rootContainer = $('.editor');
+        var $sidebarContainer = $('<div>').addClass('editor-sidebarContainer').appendTo($rootContainer);
+        var $viewerContainer = $('<div>').addClass('editor-viewerContainer').appendTo($rootContainer);
+
+        $sidebarContainer.on('transitionend', function(je) {
+            if (je.originalEvent.propertyName === 'width') {
+                if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
+                    $viewerContainer.addClass('editor_sidebarExpanded');
+                }
             }
-        }
+        });
+
+        return _.extend({
+            getRootContainer: function() {
+                return $rootContainer;
+            },
+            getSidebarContainer: function() {
+                return $sidebarContainer;
+            },
+            getViewerContainer: function() {
+                return $viewerContainer;
+            },
+            expandSidebar: function() {
+                $sidebarContainer.addClass('editor_sidebarExpanded');
+                this.trigger('sidebarchange', true);
+            },
+            collapseSidebar: function() {
+                $sidebarContainer.removeClass('editor_sidebarExpanded');
+                $viewerContainer.removeClass('editor_sidebarExpanded');
+                this.trigger('sidebarchange', false);
+            },
+            toggleSidebar: function() {
+                if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
+                    this.collapseSidebar();
+                    return false;
+                } else {
+                    this.expandSidebar();
+                    return true;
+                }
+            }
+        }, Backbone.Events);
     });
 
     cm.define('configManager', [], function() {
@@ -55,19 +91,15 @@
         var configManager = cm.get('configManager');
         var layoutManager = cm.get('layoutManager');
 
-        var $container = layoutManager.getContainer();
+        var $container = layoutManager.getViewerContainer();
 
         var cm;
         var update = function() {
-            try {
-                var cfg = configManager.getConfig();
-                var $mapContainer = $('<div>');
-                $container.append($mapContainer);
-                cm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
-                cm.create();
-            } catch (e) {
-                console.log('invalid JSON');
-            }
+            var cfg = configManager.getConfig();
+            var $mapContainer = $('<div>');
+            $container.append($mapContainer);
+            cm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
+            cm.create();
         };
 
         update();

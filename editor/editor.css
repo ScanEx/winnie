@@ -4,9 +4,9 @@ body .ui-widget { font-family: 'Roboto'; }
 
 .editor { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
-.editor-sidebarFrame { position: absolute; top: 0; bottom: 0; left: 0; width: 500px; overflow: hidden; }
-.editor-sidebarFrame { box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: width .5s ease; }
-.editor_sidebarCollapsed.editor-sidebarFrame { width: 0; }
+.editor-sidebarContainer { position: absolute; top: 0; bottom: 0; left: 0; width: 0px; overflow: hidden; }
+.editor-sidebarContainer { background: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: width .5s ease; }
+.editor_sidebarExpanded.editor-sidebarContainer { width: 500px; }
 
 .editor-codeFrame { position: absolute; top: 40px; bottom: 0; left: 0; right: 0; }
 .editor-codeFrame { border-right: 1px solid #f0f0f0; }
@@ -23,8 +23,8 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-toolbarFrame .dropdownMenuWidget-item:hover { background: rgba(0, 0, 0, 0.05); }
 .editor-toolbarFrame .dropdownMenuWidget-item a { color: #424242; }
 
-.editor-mapFrame { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
-.editor_sidebarCollapsed.editor-mapFrame { left: 0; }
+.editor-viewerContainer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
+.editor_sidebarExpanded.editor-viewerContainer { left: 500px; }
 
 .toolbar { margin: 0; padding: 0; list-style-type: none; }
 .toolbar-item { display: inline-block; }
@@ -32,8 +32,8 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-collapseButton { z-index: 50; }
 .editor-toolbarFrame { z-index: 40; }
 .editor-codeFrame { z-index: 30; }
-.editor-sidebarFrame { z-index: 20; }
-.editor-mapFrame { z-index: 10; }
+.editor-sidebarContainer { z-index: 20; }
+.editor-viewerContainer { z-index: 10; }
 
 .editor-dialog { padding: 6px 8px; }
 .popover .editor-dialog { padding: 0; }
