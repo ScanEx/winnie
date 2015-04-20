@@ -1,4 +1,17 @@
 (function() {
+    var jsonIsValid = function(json) {
+        try {
+            JSON.parse(json);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    };
+
+    var cloneDeep = function(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    };
+
     cm.define('mapsResourceServer', [], function() {
         return nsGmx.Auth.getResourceServer('geomixer');
     });
@@ -16,12 +29,12 @@
             if (je.originalEvent.propertyName === 'width') {
                 if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
                     $viewerContainer.addClass('editor_sidebarExpanded');
-                    sidebar.trigger('sidebarchange', true);
+                    lm.trigger('sidebarchange', true);
                 }
             }
         });
 
-        var sidebar = _.extend({
+        var lm = _.extend({
             getRootContainer: function() {
                 return $rootContainer;
             },
@@ -53,10 +66,11 @@
             }
         }, Backbone.Events);
 
-        return sidebar;
+        return lm;
     });
 
-    cm.define('configManager', [], function() {
+    // changing this model occurs editor and viewer
+    cm.define('wizardConfigModel', [], function() {
         var ConfigModel = Backbone.Model.extend({
             initialize: function(cfg) {
                 this.setConfig(cfg);
@@ -68,7 +82,7 @@
                 this.set('config', cfg);
             },
             getConfig: function() {
-                return this.get('config');
+                return cloneDeep(this.get('config'));
             }
         });
 
@@ -92,24 +106,26 @@
         });
     });
 
-    cm.define('viewer', ['configManager', 'layoutManager'], function(cm) {
-        var configManager = cm.get('configManager');
+    cm.define('viewer', ['wizardConfigModel', 'layoutManager'], function(cm) {
+        var wizardConfigModel = cm.get('wizardConfigModel');
         var layoutManager = cm.get('layoutManager');
 
         var $container = layoutManager.getViewerContainer();
 
         var vcm;
-        var update = function() {
-            var cfg = configManager.getConfig();
+        var update = function(cfg) {
+            $container.empty();
             var $mapContainer = $('<div>');
             $container.append($mapContainer);
             vcm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
-            vcm.create();
+            vcm.create().then(function() {
+                layoutManager.expandSidebar();
+            });
         };
 
-        update();
-        configManager.on('configchange', function(cfg) {
-            update();
+        update(wizardConfigModel.getConfig());
+        wizardConfigModel.on('configchange', function(cfg) {
+            update(cfg);
         });
 
         layoutManager.on('sidebarchange', function(isExpanded) {
@@ -139,8 +155,8 @@
         }
     });
 
-    cm.define('codeEditor', ['configManager', 'sidebarPanel', 'layoutManager'], function(cm) {
-        var configManager = cm.get('configManager');
+    cm.define('codeEditor', ['wizardConfigModel', 'sidebarPanel', 'layoutManager'], function(cm) {
+        var wizardConfigModel = cm.get('wizardConfigModel');
         var layoutManager = cm.get('layoutManager');
         var $container = cm.get('sidebarPanel').getCodeEditorContainer();
         var $aceContainer = $('<div>')
@@ -151,10 +167,13 @@
         var codeEditor = ace.edit($aceContainer.get(0));
         codeEditor.setTheme("ace/theme/chrome");
         codeEditor.getSession().setMode("ace/mode/json");
-        codeEditor.setValue(JSON.stringify(configManager.getConfig(), null, '    '));
+        codeEditor.setValue(JSON.stringify(wizardConfigModel.getConfig(), null, '    '));
         codeEditor.selection.clearSelection();
         layoutManager.on('sidebarchange', function(expanded) {
             codeEditor.resize();
+        });
+        wizardConfigModel.on('configchange', function(cfg) {
+            codeEditor.setValue(JSON.stringify(cfg, null, '    '));
         });
         return codeEditor;
     });
@@ -174,6 +193,63 @@
         return dropdownMenuWidget;
     });
 
+    cm.define('saveButton', ['toolbar', 'codeEditor', 'mapsResourceServer'], function(cm) {
+        var codeEditor = cm.get('codeEditor');
+        var mapsResourceServer = cm.get('mapsResourceServer');
+
+        $('#btn-save').popover({
+            content: '<div id="popover-save"></div>',
+            container: 'body',
+            placement: 'bottom',
+            html: true
+        });
+
+        $('#btn-save').on('shown.bs.popover', function() {
+            var origin = window.location.search ?
+                window.location.href.slice(0, window.location.href.indexOf(window.location.search)) :
+                window.location.href;
+
+            $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
+                permalink: false
+            }));
+
+            if (jsonIsValid(codeEditor.getValue())) {
+                mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
+                    content: codeEditor.getValue()
+                }).then(function(response) {
+                    var viewr = origin.replace('editor.html', 'viewer.html');
+                    var unhash = viewr.indexOf('#') === -1 ? viewr : viewr.slice(0, viewr.indexOf('#'));
+                    var permalink = unhash + '?config=' + response.Result;
+                    $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
+                        permalink: permalink
+                    }));
+                }).fail(function() {
+                    $('#popover-save').html('unknown error');
+                });
+            } else {
+                $('#popover-save').html('invalid json');
+            }
+        });
+
+        $('#btn-save').on('hide.bs.popover', function() {
+            $('#popover-save').empty();
+        });
+        return $('#btn-save');
+    });
+
+    cm.define('refreshButton', ['toolbar', 'codeEditor', 'viewer'], function() {
+        var viewer = cm.get('viewer');
+        var codeEditor = cm.get('codeEditor');
+        $('#btn-refresh').click(function(je) {
+            if (jsonIsValid(codeEditor.getValue())) {
+                viewer.update(JSON.parse(codeEditor.getValue()));
+            } else {
+                console.log('invalid json');
+            }
+        });
+        return $('#btn-refresh');
+    });
+
     cm.define('collapseButton', ['layoutManager'], function() {
         var layoutManager = cm.get('layoutManager');
         var $container = layoutManager.getRootContainer();
@@ -189,56 +265,6 @@
         updateButton(layoutManager.getSidebarState());
         return $collapseButton;
     });
-
-    // cm.define('saveButton', ['toolbar', 'editor', 'mapsResourceServer'], function(cm) {
-    //     var jsonIsValid = function() {
-    //         try {
-    //             JSON.parse(editor.getValue());
-    //             return true;
-    //         } catch (e) {
-    //             return false;
-    //         }
-    //     };
-
-    //     var editor = cm.get('editor');
-    //     var mapsResourceServer = cm.get('mapsResourceServer');
-
-    //     $('#btn-save').popover({
-    //         content: '<div id="popover-save"></div>',
-    //         container: 'body',
-    //         placement: 'bottom',
-    //         html: true
-    //     });
-
-    //     $('#btn-save').on('shown.bs.popover', function() {
-    //         var origin = window.location.search ?
-    //             window.location.href.slice(0, window.location.href.indexOf(window.location.search)) :
-    //             window.location.href;
-
-    //         $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
-    //             permalink: false
-    //         }));
-
-    //         if (jsonIsValid()) {
-    //             mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
-    //                 content: editor.getValue()
-    //             }).then(function(response) {
-    //                 $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
-    //                     permalink: origin.replace('editor.html', 'viewer.html') + '?config=' + response.Result
-    //                 }));
-    //             }).fail(function() {
-    //                 $('#popover-save').html('unknown error');
-    //             });
-    //         } else {
-    //             $('#popover-save').html('invalid json');
-    //         }
-    //     });
-
-    //     $('#btn-save').on('hide.bs.popover', function() {
-    //         $('#popover-save').empty();
-    //     });
-    //     return true;
-    // });
 
     cm.create();
 })();
