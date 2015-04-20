@@ -150,9 +150,21 @@ var layersTree = {
     build: true
 };
 
+var sidebar = {
+    id: 'Sidebar',
+    srcDir: './external/GMXCommonComponents/Sidebar'
+};
+
 var storytellingWidget = {
     id: 'StorytellingWidget',
     srcDir: './external/GMXCommonComponents/StorytellingWidget',
+    distDir: './build',
+    build: true
+};
+
+var layersTreeWidget = {
+    id: 'LayersTreeWidget',
+    srcDir: './external/GMXCommonComponents/LayersTreeWidget',
     distDir: './build',
     build: true
 };
@@ -172,6 +184,8 @@ var applicationConstructorComponents = [
     commonStyles,
     baseLayersControl,
     componentsManager,
+    sidebar,
+    layersTreeWidget,
     storytellingWidget,
     applicationConstructor
 ];
