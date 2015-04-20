@@ -23,7 +23,7 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-toolbarFrame .dropdownMenuWidget-item:hover { background: rgba(0, 0, 0, 0.05); }
 .editor-toolbarFrame .dropdownMenuWidget-item a { color: #424242; }
 
-.editor-mapFrame { position: absolute; top: 0; bottom: 0; left: 500px; right: 0; overflow: hidden; }
+.editor-mapFrame { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
 .editor_sidebarCollapsed.editor-mapFrame { left: 0; }
 
 .toolbar { margin: 0; padding: 0; list-style-type: none; }
