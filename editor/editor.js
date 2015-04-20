@@ -16,11 +16,12 @@
             if (je.originalEvent.propertyName === 'width') {
                 if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
                     $viewerContainer.addClass('editor_sidebarExpanded');
+                    sidebar.trigger('sidebarchange', true);
                 }
             }
         });
 
-        return _.extend({
+        var sidebar = _.extend({
             getRootContainer: function() {
                 return $rootContainer;
             },
@@ -32,7 +33,6 @@
             },
             expandSidebar: function() {
                 $sidebarContainer.addClass('editor_sidebarExpanded');
-                this.trigger('sidebarchange', true);
             },
             collapseSidebar: function() {
                 $sidebarContainer.removeClass('editor_sidebarExpanded');
@@ -49,6 +49,8 @@
                 }
             }
         }, Backbone.Events);
+
+        return sidebar;
     });
 
     cm.define('configManager', [], function() {
@@ -93,13 +95,13 @@
 
         var $container = layoutManager.getViewerContainer();
 
-        var cm;
+        var vcm;
         var update = function() {
             var cfg = configManager.getConfig();
             var $mapContainer = $('<div>');
             $container.append($mapContainer);
-            cm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
-            cm.create();
+            vcm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
+            vcm.create();
         };
 
         update();
@@ -107,76 +109,67 @@
             update();
         });
 
+        layoutManager.on('sidebarchange', function(isExpanded) {
+            vcm.get('map').invalidateSize();
+        });
+
         return {
             update: update,
             getCm: function() {
-                return cm;
+                return vcm;
             }
         };
     });
 
-    // cm.define('editor', ['sampleconfig'], function(cm) {
-    //     var container = $('<div>')
-    //         .css('position', 'relative')
-    //         .css('width', '100%')
-    //         .css('height', '100%');
+    cm.define('sidebarPanel', ['layoutManager'], function() {
+        var $container = cm.get('layoutManager').getSidebarContainer();
+        var $sidebarPanel = $('<div>').addClass('sidebarPanel').appendTo($container);
+        var $toolbarContainer = $('<div>').addClass('sidebarPanel-toolbarContainer').appendTo($sidebarPanel);
+        var $codeEditorContainer = $('<div>').addClass('sidebarPanel-codeEditorContainer').appendTo($sidebarPanel);
+        return {
+            getToolbarContainer: function() {
+                return $toolbarContainer;
+            },
+            getCodeEditorContainer: function() {
+                return $codeEditorContainer;
+            }
+        }
+    });
 
-    //     $('.editor-codeFrame').append(container);
+    cm.define('codeEditor', ['configManager', 'sidebarPanel', 'layoutManager'], function(cm) {
+        var configManager = cm.get('configManager');
+        var layoutManager = cm.get('layoutManager');
+        var $container = cm.get('sidebarPanel').getCodeEditorContainer();
+        var $aceContainer = $('<div>')
+            .css('position', 'relative')
+            .css('width', '100%')
+            .css('height', '100%')
+            .appendTo($container);
+        var codeEditor = ace.edit($aceContainer.get(0));
+        codeEditor.setTheme("ace/theme/chrome");
+        codeEditor.getSession().setMode("ace/mode/json");
+        codeEditor.setValue(JSON.stringify(configManager.getConfig(), null, '    '));
+        codeEditor.selection.clearSelection();
+        layoutManager.on('sidebarchange', function(expanded) {
+            codeEditor.resize();
+        });
+        return codeEditor;
+    });
 
-    //     var editor = ace.edit(container.get(0));
-    //     editor.setTheme("ace/theme/chrome");
-    //     editor.getSession().setMode("ace/mode/json");
-    //     editor.setValue(JSON.stringify(cm.get('sampleconfig'), null, '    '));
-    //     editor.selection.clearSelection();
-    //     return editor;
-    // });
-
-    // cm.define('toolbar', [], function(cm) {
-    //     var dropdownMenuWidget = new nsGmx.DropdownMenuWidget({
-    //         items: [{
-    //             title: 'Refresh',
-    //             id: 'btn-refresh'
-    //         }, {
-    //             title: 'Save',
-    //             id: 'btn-save'
-    //         }]
-    //     });
-    //     dropdownMenuWidget.appendTo($('.editor-toolbarFrame'));
-    //     return dropdownMenuWidget;
-    // });
-
-    // cm.define('viewer', ['toolbar', 'editor'], function(cm) {
-    //     var editor = cm.get('editor');
-    //     var $container = $('.editor-mapFrame');
-
-    //     var cm;
-    //     var update = function() {
-    //         try {
-    //             var cfg = JSON.parse(editor.getValue());
-    //             $container.empty();
-    //             var $mapContainer = $('<div>')
-    //                 .css('position', 'relative')
-    //                 .css('width', '100%')
-    //                 .css('height', '100%');
-    //             $container.append($mapContainer);
-    //             cm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
-    //             cm.create();
-    //         } catch (e) {
-    //             console.log('invalid JSON');
-    //         }
-    //     };
-
-    //     update();
-    //     $('#btn-refresh').click(function() {
-    //         update();
-    //     });
-    //     return {
-    //         update: update,
-    //         getCm: function() {
-    //             return cm;
-    //         }
-    //     };
-    // });
+    cm.define('toolbar', ['sidebarPanel'], function(cm) {
+        var $container = cm.get('sidebarPanel').getToolbarContainer();
+        var dropdownMenuWidget = new nsGmx.DropdownMenuWidget({
+            items: [{
+                title: 'Refresh',
+                id: 'btn-refresh'
+            }, {
+                title: 'Save',
+                id: 'btn-save'
+            }]
+        });
+        dropdownMenuWidget.appendTo($container);
+        return dropdownMenuWidget;
+    });
 
     // cm.define('saveButton', ['toolbar', 'editor', 'mapsResourceServer'], function(cm) {
     //     var jsonIsValid = function() {

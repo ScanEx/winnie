@@ -8,20 +8,20 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-sidebarContainer { background: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: width .5s ease; }
 .editor_sidebarExpanded.editor-sidebarContainer { width: 500px; }
 
-.editor-codeFrame { position: absolute; top: 40px; bottom: 0; left: 0; right: 0; }
-.editor-codeFrame { border-right: 1px solid #f0f0f0; }
-
 .editor-collapseButton { position: absolute; top: 50%; left: 0; width: 26px; height: 26px; margin-top: -13px; }
 .editor-collapseButton { box-shadow: 0 0 10px rgba(0,0,0,0.25); background-color: #ffffff; border-radius: 0 5px 5px 0; font-size: 20px; cursor: pointer; }
 .editor-collapseButton { -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 .editor-collapseButton:before { margin: 3px 1px; }
 
-.editor-toolbarFrame { position: absolute; top: 0; left: 0; right: 0; height: 40px; }
-.editor-toolbarFrame { border-right: 1px solid #f0f0f0; background-color: #ebebeb; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
-.editor-toolbarFrame .dropdownMenuWidget { height: 100%; }
-.editor-toolbarFrame .dropdownMenuWidget-item { font-size: 14px; }
-.editor-toolbarFrame .dropdownMenuWidget-item:hover { background: rgba(0, 0, 0, 0.05); }
-.editor-toolbarFrame .dropdownMenuWidget-item a { color: #424242; }
+.sidebarPanel-toolbarContainer { position: absolute; top: 0; left: 0; right: 0; height: 40px; }
+.sidebarPanel-toolbarContainer { border-right: 1px solid #f0f0f0; background-color: #ebebeb; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
+.sidebarPanel-toolbarContainer .dropdownMenuWidget { height: 100%; }
+.sidebarPanel-toolbarContainer .dropdownMenuWidget-item { font-size: 14px; }
+.sidebarPanel-toolbarContainer .dropdownMenuWidget-item:hover { background: rgba(0, 0, 0, 0.05); }
+.sidebarPanel-toolbarContainer .dropdownMenuWidget-item a { color: #424242; }
+
+.sidebarPanel-codeEditorContainer { position: absolute; top: 40px; bottom: 0; left: 0; right: 0; }
+.sidebarPanel-codeEditorContainer { border-right: 1px solid #f0f0f0; }
 
 .editor-viewerContainer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
 .editor_sidebarExpanded.editor-viewerContainer { left: 500px; }
@@ -30,8 +30,8 @@ body .ui-widget { font-family: 'Roboto'; }
 .toolbar-item { display: inline-block; }
 
 .editor-collapseButton { z-index: 50; }
-.editor-toolbarFrame { z-index: 40; }
-.editor-codeFrame { z-index: 30; }
+.sidebarPanel-toolbarContainer { z-index: 40; }
+.sidebarPanel-codeEditorContainer { z-index: 30; }
 .editor-sidebarContainer { z-index: 20; }
 .editor-viewerContainer { z-index: 10; }
 
