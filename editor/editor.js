@@ -47,6 +47,9 @@
                     this.expandSidebar();
                     return true;
                 }
+            },
+            getSidebarState: function() {
+                return $sidebarContainer.hasClass('editor_sidebarExpanded');
             }
         }, Backbone.Events);
 
@@ -171,6 +174,22 @@
         return dropdownMenuWidget;
     });
 
+    cm.define('collapseButton', ['layoutManager'], function() {
+        var layoutManager = cm.get('layoutManager');
+        var $container = layoutManager.getRootContainer();
+        var $collapseButton = $('<div>').addClass('editor-collapseButton').appendTo($container);
+        $collapseButton.click(function() {
+            layoutManager.toggleSidebar();
+        });
+        var updateButton = function(sidebarIsExpanded) {
+            $collapseButton.toggleClass('icon-angle-left', sidebarIsExpanded);
+            $collapseButton.toggleClass('icon-angle-right', !sidebarIsExpanded);
+        };
+        layoutManager.on('sidebarchange', updateButton);
+        updateButton(layoutManager.getSidebarState());
+        return $collapseButton;
+    });
+
     // cm.define('saveButton', ['toolbar', 'editor', 'mapsResourceServer'], function(cm) {
     //     var jsonIsValid = function() {
     //         try {
@@ -218,40 +237,6 @@
     //     $('#btn-save').on('hide.bs.popover', function() {
     //         $('#popover-save').empty();
     //     });
-    //     return true;
-    // });
-
-    // cm.define('collapseButton', ['viewer', 'editor'], function() {
-    //     var viewer = cm.get('viewer');
-    //     var editor = cm.get('editor');
-    //     var $mapView = $('.editor-mapFrame');
-    //     var $sidebarView = $('.editor-sidebarFrame');
-    //     var $buttonView = $('.editor-collapseButton');
-    //     var toggleButtonState = function() {
-    //         $buttonView.toggleClass('icon-angle-left', !$sidebarView.hasClass('editor_sidebarCollapsed'));
-    //         $buttonView.toggleClass('icon-angle-right', $sidebarView.hasClass('editor_sidebarCollapsed'));
-    //     };
-    //     var kickMap = function() {
-    //         viewer.getCm().get('map') && viewer.getCm().get('map').invalidateSize();
-    //         editor.resize();
-    //     };
-    //     $sidebarView.on('transitionend', function(je) {
-    //         if (je.originalEvent.propertyName === 'width') {
-    //             if (!$sidebarView.hasClass('editor_sidebarCollapsed')) {
-    //                 $mapView.removeClass('editor_sidebarCollapsed');
-    //             }
-    //             kickMap();
-    //         }
-    //     });
-    //     $buttonView.on('click', function() {
-    //         $sidebarView.toggleClass('editor_sidebarCollapsed');
-    //         if ($sidebarView.hasClass('editor_sidebarCollapsed')) {
-    //             $mapView.addClass('editor_sidebarCollapsed');
-    //         }
-    //         toggleButtonState();
-    //         kickMap();
-    //     });
-    //     toggleButtonState();
     //     return true;
     // });
 
