@@ -24,6 +24,7 @@
         var $rootContainer = $('.editor');
         var $sidebarContainer = $('<div>').addClass('editor-sidebarContainer').appendTo($rootContainer);
         var $viewerContainer = $('<div>').addClass('editor-viewerContainer').appendTo($rootContainer);
+        var $wizardContainer = $('<div>').addClass('editor-wizardContainer').appendTo($rootContainer);
 
         $sidebarContainer.on('transitionend', function(je) {
             if (je.originalEvent.propertyName === 'width') {
@@ -63,6 +64,9 @@
             },
             getSidebarState: function() {
                 return $sidebarContainer.hasClass('editor_sidebarExpanded');
+            },
+            getWizardContainer: function() {
+                return $wizardContainer;
             }
         }, Backbone.Events);
 
@@ -86,24 +90,7 @@
             }
         });
 
-        return new ConfigModel({
-            map: {
-                center: [55.750303, 37.619934],
-                zoom: 8
-            },
-            gmxMap: {
-                mapID: '37TYY',
-                apiKey: 'W4IH6K7CJ4'
-            },
-            zoomControl: 'leaflet',
-            hideControl: false,
-            centerControl: {
-                color: '#121212'
-            },
-            layersTreeWidget: {
-
-            }
-        });
+        return new ConfigModel(nsGmx.ConfigTemplates.map);
     });
 
     cm.define('viewer', ['wizardConfigModel', 'layoutManager'], function(cm) {
@@ -174,6 +161,7 @@
         });
         wizardConfigModel.on('configchange', function(cfg) {
             codeEditor.setValue(JSON.stringify(cfg, null, '    '));
+            codeEditor.selection.clearSelection();
         });
         return codeEditor;
     });
@@ -264,6 +252,18 @@
         layoutManager.on('sidebarchange', updateButton);
         updateButton(layoutManager.getSidebarState());
         return $collapseButton;
+    });
+
+    cm.define('configWizard', ['layoutManager', 'wizardConfigModel'], function() {
+        var layoutManager = cm.get('layoutManager');
+        var wizardConfigModel = cm.get('wizardConfigModel');
+        var configWizard = new nsGmx.ConfigWizard();
+        configWizard.appendTo(layoutManager.getWizardContainer());
+        configWizard.on('configchange', function(cfg) {
+            wizardConfigModel.setConfig(cfg);
+            layoutManager.getWizardContainer().hide();
+        });
+        return configWizard;
     });
 
     cm.create();

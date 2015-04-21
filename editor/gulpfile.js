@@ -5,9 +5,10 @@ var footer = require('gulp-footer');
 var streamqueue = require('streamqueue');
 var html2jsobject = require('gulp-html2jsobject');
 
-var styles = ['editor.css'];
-var scripts = ['editor.js'];
-var templates = ['saveDialog.html'];
+var styles = ['editor.css', 'wizard.css'];
+var scripts = ['editor.js', 'wizard.js', 'configTemplates.js'];
+var templates = ['saveDialog.html', 'wizard.html', 'apptypeSwitch.html'];
+var images = ['wizard-apptype-map.svg', 'wizard-apptype-storytelling.svg', 'wizard-apptype-sidebar.svg', 'mapbg.png'];
 
 gulp.task('default', function() {
     var sourcesStream = gulp.src(scripts);
@@ -19,7 +20,9 @@ gulp.task('default', function() {
         .pipe(header('nsGmx.Templates = nsGmx.Templates || {};'))
         .pipe(header('var nsGmx = nsGmx || {};'));
 
-    var cssStream = gulp.src(styles)
+    var cssStream = gulp.src(styles);
+
+    var imgStream = gulp.src(images);
 
     var jsStream = streamqueue({
             objectMode: true
@@ -29,7 +32,7 @@ gulp.task('default', function() {
 
     var finalStream = streamqueue({
             objectMode: true
-        }, jsStream, cssStream)
+        }, jsStream, cssStream, imgStream)
         .pipe(gulp.dest('build'));
 });
 

@@ -193,7 +193,8 @@ var applicationConstructorComponents = [
 require('./external/GMXBuilder')(gulp, {
     tempDir: './temp',
     distDir: './dist',
-    watchExtensions: ['.js', '.css', '.html', '.less', '.svg']
+    watchExtensions: ['.js', '.css', '.html', '.less', '.svg'],
+    distributionExtensions: ['.js', '.css', '.jpg', '.png', '.eot', '.ttf', '.woff', '.svg']
 }, [{
     id: 'gmxApplicationConstructor',
     components: applicationConstructorComponents
