@@ -8,7 +8,7 @@ var html2jsobject = require('gulp-html2jsobject');
 var styles = ['editor.css', 'wizard.css'];
 var scripts = ['editor.js', 'wizard.js', 'configTemplates.js'];
 var templates = ['saveDialog.html', 'wizard.html', 'apptypeSwitch.html'];
-var images = ['wizard-apptype-map.svg', 'wizard-apptype-storytelling.svg', 'wizard-apptype-sidebar.svg', 'mapbg.png'];
+var images = ['wizard-apptype-map.svg', 'wizard-apptype-storytelling.svg', 'wizard-apptype-sidebar.svg', 'tiny_grid.png'];
 
 gulp.task('default', function() {
     var sourcesStream = gulp.src(scripts);

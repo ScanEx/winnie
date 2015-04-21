@@ -24,6 +24,7 @@ body .ui-widget { font-family: 'Roboto'; }
 .sidebarPanel-codeEditorContainer { border-right: 1px solid #f0f0f0; }
 
 .editor-viewerContainer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; }
+.editor-viewerContainer .leaflet-container { background-image: url('tiny_grid.png'); }
 .editor_sidebarExpanded.editor-viewerContainer { left: 500px; }
 
 .toolbar { margin: 0; padding: 0; list-style-type: none; }
