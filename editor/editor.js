@@ -175,6 +175,9 @@
             }, {
                 title: 'Save',
                 id: 'btn-save'
+            }, {
+                title: 'Wizard',
+                id: 'btn-wizard'
             }]
         });
         dropdownMenuWidget.appendTo($container);
@@ -252,6 +255,15 @@
         layoutManager.on('sidebarchange', updateButton);
         updateButton(layoutManager.getSidebarState());
         return $collapseButton;
+    });
+
+    cm.define('wizardButton', ['toolbar', 'layoutManager'], function() {
+        var layoutManager = cm.get('layoutManager');
+        var $btn = $('#btn-wizard');
+        $btn.click(function() {
+            layoutManager.getWizardContainer().show();
+        });
+        return $btn;
     });
 
     cm.define('configWizard', ['layoutManager', 'wizardConfigModel'], function() {
