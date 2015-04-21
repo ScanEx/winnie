@@ -171,13 +171,16 @@
         var dropdownMenuWidget = new nsGmx.DropdownMenuWidget({
             items: [{
                 title: 'Refresh',
-                id: 'btn-refresh'
+                id: 'btn-refresh',
+                fonticon: 'icon-refresh'
             }, {
                 title: 'Save',
-                id: 'btn-save'
+                id: 'btn-save',
+                fonticon: 'icon-link'
             }, {
                 title: 'Wizard',
-                id: 'btn-wizard'
+                id: 'btn-wizard',
+                fonticon: 'icon-magic'
             }]
         });
         dropdownMenuWidget.appendTo($container);
