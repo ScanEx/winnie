@@ -17,7 +17,7 @@ var handlebars = {
 };
 
 var backbone = {
-    bowerComponent: 'backbone',
+    bowerComponent: 'backbone#1.1.2',
     distFiles: ['backbone.js']
 }
 
@@ -88,11 +88,17 @@ var gmxControls = {
     watch: false
 };
 
-var baseLayersControl = {
-    id: 'BaseLayersControl',
-    srcDir: './external/GMXCommonComponents/BaseLayersControl',
-    distDir: 'build',
-    build: true
+var iconLayersControl = {
+    id: 'Leaflet-IconLayers',
+    srcDir: './external/Leaflet-IconLayers',
+    distDir: './src',
+    build: false
+};
+
+var gmxIconLayers = {
+    id: 'GmxIconLayers',
+    srcDir: './external/GMXCommonComponents/GmxIconLayers',
+    build: false
 };
 
 var componentsManager = {
@@ -110,6 +116,11 @@ var commonStyles = {
     srcDir: './external/GMXCommonComponents/CommonStyles',
     distDir: './build',
     build: true
+};
+
+var translations = {
+    id: 'translations',
+    url: 'http://maps.kosmosnimki.ru/api/translations.js'
 };
 
 var dropdownMenuWidget = {
@@ -150,9 +161,21 @@ var layersTree = {
     build: true
 };
 
+var gmxWidget = {
+    id: 'GmxWidget',
+    srcDir: './external/GMXCommonComponents/GmxWidget',
+    build: false
+};
+
+var animationHelpers = {
+    id: 'animationHelpers',
+    srcDir: './external/GMXCommonComponents/animationHelpers',
+    build: false
+};
+
 var sidebar = {
-    id: 'Sidebar',
-    srcDir: './external/GMXCommonComponents/Sidebar'
+    id: 'IconSidebarWidget',
+    srcDir: './external/GMXCommonComponents/IconSidebarWidget'
 };
 
 var storytellingWidget = {
@@ -169,6 +192,25 @@ var layersTreeWidget = {
     build: true
 };
 
+var switchingCollectionWidget = {
+    id: 'SwitchingCollectionWidget',
+    srcDir: './external/GMXCommonComponents/SwitchingCollectionWidget',
+    build: false
+};
+
+var bookmarksWidget = {
+    id: 'BookmarksWidget',
+    srcDir: './external/GMXCommonComponents/BookmarksWidget',
+    distDir: './build',
+    build: true
+};
+
+var stateManager = {
+    id: 'StateManager',
+    srcDir: './external/GMXCommonComponents/StateManager',
+    build: false
+};
+
 var applicationConstructorComponents = [
     jquery,
     handlebars,
@@ -182,11 +224,18 @@ var applicationConstructorComponents = [
     gmxControls,
     layersTree,
     commonStyles,
-    baseLayersControl,
+    translations,
+    iconLayersControl,
+    gmxIconLayers,
     componentsManager,
+    gmxWidget,
+    animationHelpers,
+    switchingCollectionWidget,
     sidebar,
     layersTreeWidget,
+    bookmarksWidget,
     storytellingWidget,
+    stateManager,
     applicationConstructor
 ];
 

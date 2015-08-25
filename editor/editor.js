@@ -102,7 +102,7 @@
         var vcm;
         var update = function(cfg) {
             $container.empty();
-            var $mapContainer = $('<div>');
+            var $mapContainer = $('<div>').addClass('editor-viewerContainer');
             $container.append($mapContainer);
             vcm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
             vcm.create().then(function() {

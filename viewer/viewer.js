@@ -43,7 +43,7 @@
         }
     });
 
-    cm.define('layoutManager', [], function() {
+    cm.define('layoutManager', [], function(cm) {
         var mapEl = L.DomUtil.create('div', 'mapContainer', document.body);
         return {
             getMapContainer: function() {
