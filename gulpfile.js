@@ -250,12 +250,14 @@ require('./external/GMXBuilder')(gulp, {
     components: applicationConstructorComponents
 }, {
     id: 'viewer',
+    htmlfile: 'html/viewer.html',
     components: applicationConstructorComponents.concat([{
         id: 'viewer',
         srcDir: './viewer'
     }])
 }, {
     id: 'editor',
+    htmlfile: 'html/editor.html',
     components: applicationConstructorComponents.concat([
         aceEditor,
         dropdownMenuWidget,
