@@ -224,6 +224,7 @@ var applicationConstructorComponents = [
     gmxControls,
     layersTree,
     commonStyles,
+    popover,
     translations,
     iconLayersControl,
     gmxIconLayers,
@@ -258,7 +259,6 @@ require('./external/GMXBuilder')(gulp, {
     components: applicationConstructorComponents.concat([
         aceEditor,
         dropdownMenuWidget,
-        popover,
         authManager, {
             id: 'editor',
             srcDir: './editor',
