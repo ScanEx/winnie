@@ -106,9 +106,10 @@ var componentsManager = {
     srcDir: './external/GMXCommonComponents/ComponentsManager'
 };
 
-var applicationConstructor = {
-    id: 'ApplicationConstructor',
-    srcDir: './external/GMXCommonComponents/ApplicationConstructor'
+var winnieCore = {
+    id: 'core',
+    srcDir: './core',
+    build: false
 };
 
 var commonStyles = {
@@ -211,7 +212,7 @@ var stateManager = {
     build: false
 };
 
-var applicationConstructorComponents = [
+var coreComponents = [
     jquery,
     handlebars,
     underscore,
@@ -237,7 +238,7 @@ var applicationConstructorComponents = [
     bookmarksWidget,
     storytellingWidget,
     stateManager,
-    applicationConstructor
+    winnieCore
 ];
 
 require('./external/GMXBuilder')(gulp, {
@@ -246,19 +247,19 @@ require('./external/GMXBuilder')(gulp, {
     watchExtensions: ['.js', '.css', '.html', '.less', '.svg'],
     distributionExtensions: ['.js', '.css', '.jpg', '.png', '.eot', '.ttf', '.woff', '.svg']
 }, [{
-    id: 'gmxApplicationConstructor',
-    components: applicationConstructorComponents
+    id: 'core',
+    components: coreComponents
 }, {
     id: 'viewer',
     htmlfile: 'html/viewer.html',
-    components: applicationConstructorComponents.concat([{
+    components: coreComponents.concat([{
         id: 'viewer',
         srcDir: './viewer'
     }])
 }, {
     id: 'editor',
     htmlfile: 'html/editor.html',
-    components: applicationConstructorComponents.concat([
+    components: coreComponents.concat([
         aceEditor,
         dropdownMenuWidget,
         authManager, {
