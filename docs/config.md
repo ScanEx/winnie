@@ -40,6 +40,7 @@ layersMapper | менеджер отображения слоёв (отключ�
 layersTreeWidget | виджет дерева слоёв | `<Number>maxDepth` `<Boolean>showCenterIcon` | [LayersTreeWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/LayersTreeWidget)
 storytellingWidget | виджет сторителлинга | --- | [StorytellingWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/StorytellingWidget)
 sidebarWidget | сайдбар. Включается автоматически, если включен виджет закладок или дерева слоёв | `<Boolean>useAnimation` | [IconSidebarWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/IconSidebarWidget)
+calendarWidget | календарь |  | [CalendarWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/CalendarWidget)
 
 ## Секция state
 

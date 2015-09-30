@@ -6,6 +6,11 @@ var jquery = {
     distFiles: ['dist/jquery.js']
 };
 
+var jqueryui = {
+    bowerComponent: 'jquery-ui',
+    distFiles: ['jquery-ui.js']
+};
+
 var underscore = {
     bowerComponent: 'underscore',
     distFiles: ['underscore.js']
@@ -199,6 +204,13 @@ var layersTreeWidget = {
     build: true
 };
 
+var calendarWidget = {
+    id: 'CalendarWidget',
+    srcDir: './external/GMXCommonComponents/CalendarWidget',
+    distDir: './build',
+    build: true
+};
+
 var switchingCollectionWidget = {
     id: 'SwitchingCollectionWidget',
     srcDir: './external/GMXCommonComponents/SwitchingCollectionWidget',
@@ -220,6 +232,7 @@ var stateManager = {
 
 var coreComponents = [
     jquery,
+    jqueryui,
     handlebars,
     underscore,
     backbone,
@@ -242,6 +255,7 @@ var coreComponents = [
     switchingCollectionWidget,
     sidebar,
     layersTreeWidget,
+    calendarWidget,
     bookmarksWidget,
     storytellingWidget,
     stateManager,
