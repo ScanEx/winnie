@@ -106,6 +106,12 @@ var componentsManager = {
     srcDir: './external/GMXCommonComponents/ComponentsManager'
 };
 
+var utils = {
+    id: 'Utils',
+    srcDir: './external/GMXCommonComponents/Utils',
+    build: false
+};
+
 var winnieCore = {
     id: 'core',
     srcDir: './core',
@@ -230,6 +236,7 @@ var coreComponents = [
     iconLayersControl,
     gmxIconLayers,
     componentsManager,
+    utils,
     gmxWidget,
     animationHelpers,
     switchingCollectionWidget,
