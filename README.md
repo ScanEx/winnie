@@ -1,23 +1,32 @@
 # gmxApplicationConstructor
 
 ###Description
-Simple way to publish [Leaflet](http://leaflet.js) and [GeoMixer](http://geomixer.ru)-based maps with extended set of UI controls and widgets
+Easy way to embed [Leaflet](http://leafletjs.com/) and [GeoMixer](http://geomixer.ru/index.php/en) based maps into your applications or create a new ones with extended and configurable set of UI controls and widgets
 
 ###Features
 - GeoMixer based data visualization
 - Lealfet plugins
 - Widgets:
-  - Base Maps layers
-  - Layers tree
-  - Storrytelling
-  - Bookmarks on the map
-  - Balloon fotogallery
+  - [Base Maps layers](https://github.com/ScanEx/Leaflet.gmxBaseLayersManager)
+  - Sidebar
+  ..- LayersTree
+  ..- Objects and geometry
+  - Storytelling
+  ..- Bookmarks on the map
+  - Balloon image gallery
+  - Calendar
+  - Search bar
+  - Copyright bar
 
 ###Examples
 
 ###License
 
+© 2015 Kosmosnimki Ru Ltd. (SCANEX Group), published under Apache Public License 2.0 (?)
+
 ###Getting started
+
+- Editor
 
 ###Описание
 Простой способ создавать картографические приложения на основе [Leaflet](http://leaflet.js) и [GeoMixer](http://geomixer.ru), используя набор готовых контролов и виджетов
