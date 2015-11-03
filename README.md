@@ -52,14 +52,14 @@ You have two work scenarios:
 
 1. Go to the [Editor](http://kosmosnimki.ru/winnie) from your Geomixer project using option "Share" and choose one of the templates
 2. Edit config file to customize base UI settings accordingly to config options (see [config reference](https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md) for more detailed description)
-3. Save final application, get permalink and embed into your site or blog using ```<iframe>``` (you can return and edit it anytime by following permalink)
+3. Save final map application, get permalink and embed into your site or blog using ```<iframe>``` (you can return and edit it anytime following the iframe permalink)
 
 #### You just want to use Leaflet:
 
-1. Go to the [Editor](http://kosmosnimki.ru/winnie) directly and xhoose one of the templetes (by default it will have base OSM map) 
+1. Go to the [Editor](http://kosmosnimki.ru/winnie) directly and choose one of the templates (by default it will use base OSM map) 
 	- or you can make a local clone of source library by downloading it from [Github]
-2. Connect any additional Winnie-widgets that can be useful for your project (see the [full list of widgets & UI components])
-3. Save and embed application using ```<iframe>``` or paste the final code into your HTML
+2. Connect any additional [Winnie-widgets] that can be useful for your project
+3. Save and embed map application using ```<iframe>``` or customize the code into your local application
 
 
 ### Описание
