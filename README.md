@@ -59,7 +59,7 @@ You have two work scenarios:
 1. Go to the [Editor](http://kosmosnimki.ru/winnie) directly and choose one of the templates (by default it will use base OSM map) 
 	- or you can make a local clone of source library by downloading it from [Github]
 2. Connect any additional [Winnie-widgets] that can be useful for your project
-3. Save and embed map application using ```<iframe>``` or customize the code into your local application
+3. Save and embed map application using ```<iframe>``` or customize the source code
 
 
 ### Описание
