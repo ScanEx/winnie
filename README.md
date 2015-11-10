@@ -76,11 +76,6 @@ Download the library and customize the source code if you like, using the Winnie
   - Фотогаллерея в балунах
   - Строка поиска*
 
-
-### Примеры
-
-См. выше - примеры приложений, созданных с помощью "Winnie".
-
 ### Лицензия
 
 © 2015 Kosmosnimki Ru Ltd. (SCANEX Group), published under [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
