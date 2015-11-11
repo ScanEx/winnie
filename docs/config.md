@@ -101,17 +101,17 @@ calendarWidget | календарь |  | [CalendarWidget](https://github.com/Sca
 
 ```json
 {
-    "E8UaLwuFxFZspAap": {
+    "<GroupID>": {
         "title": {
-            "eng": "Fires"
+            "eng": "Group1"
         }
     },
-    "Jc2t053ymObeCVLW": {
+    "GroupID": {
         "title": {
-            "eng": "Ecology"
+            "eng": "Group2"
         }
     },
-    "A854633809CB44B088DD51B70A312EEC": {
+    "<LayerID>": {
         "clusters": {
             "zoomToBoundsOnClick": false,
             "autoSpiderfy": true,
