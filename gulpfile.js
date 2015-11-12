@@ -55,6 +55,11 @@ var markercluster = {
     distFiles: ['dist/MarkerCluster.css', 'dist/MarkerCluster.Default.css', 'dist/leaflet.markercluster.js']
 };
 
+var heatmap = {
+    id: 'leaflet.heat',
+    bowerComponent: 'leaflet/leaflet.heat',
+    distFiles: ['dist/leaflet-heat.js']
+};
 
 var leafletGeomixer = {
     id: 'Leaflet-GeoMixer',
@@ -245,6 +250,7 @@ var coreComponents = [
     thorax,
     leaflet,
     markercluster,
+    heatmap,
     leafletGeomixer,
     tileLayerMercator,
     gmxBaseLayersManager,
