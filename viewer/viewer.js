@@ -19,7 +19,7 @@
         };
     });
 
-    cm.define('config', ['urlManager'], function(cm, cb) {
+    cm.define('permalinkConfig', ['urlManager'], function(cm, cb) {
         var urlManager = cm.get('urlManager');
         if (urlManager.getParam('config')) {
             var oReq = new XMLHttpRequest();
@@ -45,20 +45,36 @@
 
     cm.define('layoutManager', [], function(cm) {
         var mapEl = L.DomUtil.create('div', 'mapContainer', document.body);
+        var editButtonEl = L.DomUtil.create('div', 'editButtonContainer', document.body);
         return {
             getMapContainer: function() {
                 return mapEl;
+            },
+            getEditButtonContainer: function() {
+                return editButtonEl;
             }
         }
     });
 
-    cm.define('mapApplicationConstructor', ['layoutManager', 'config'], function(cm, cb) {
-        var config = cm.get('config');
+    cm.define('mapApplicationConstructor', ['layoutManager', 'permalinkConfig'], function(cm, cb) {
+        var config = cm.get('permalinkConfig');
         var layoutManager = cm.get('layoutManager');
         var macm = nsGmx.createGmxApplication(layoutManager.getMapContainer(), config)
         macm.create().then(function() {
             cb(macm);
         });
+    });
+
+    cm.define('editButton', ['mapApplicationConstructor', 'permalinkConfig', 'layoutManager'], function(cm) {
+        var permalinkConfig = cm.get('permalinkConfig');
+        var layoutManager = cm.get('layoutManager');
+
+        var editButtonContainerEl = layoutManager.getEditButtonContainer();
+        var editButtonEl = L.DomUtil.create('a', 'editButton', editButtonContainerEl);
+        editButtonEl.innerHTML = L.gmxLocale.getLanguage() === 'rus' ? 'редактировать' : 'edit';
+        editButtonEl.setAttribute('href', window.location.href.replace('viewer', 'editor'));
+
+        return editButtonEl;
     });
 
     cm.create();
