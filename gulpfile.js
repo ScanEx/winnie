@@ -50,6 +50,12 @@ var leaflet = {
     ]
 };
 
+var markercluster = {
+    bowerComponent: 'leaflet.markercluster',
+    distFiles: ['dist/MarkerCluster.css', 'dist/MarkerCluster.Default.css', 'dist/leaflet.markercluster.js']
+};
+
+
 var leafletGeomixer = {
     id: 'Leaflet-GeoMixer',
     srcDir: './external/Leaflet-GeoMixer',
@@ -238,6 +244,7 @@ var coreComponents = [
     backbone,
     thorax,
     leaflet,
+    markercluster,
     leafletGeomixer,
     tileLayerMercator,
     gmxBaseLayersManager,
