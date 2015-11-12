@@ -1,16 +1,28 @@
 (function() {
-    var jsonIsValid = function(json) {
+    function jsonIsValid(json) {
         try {
             JSON.parse(json);
             return true;
         } catch (e) {
             return false;
         }
-    };
+    }
 
-    var cloneDeep = function(obj) {
+    function cloneDeep(obj) {
         return JSON.parse(JSON.stringify(obj));
-    };
+    }
+
+    function serializeCode(kod, viewerComponentManager) {
+        code = cloneDeep(kod);
+        code.state = viewerComponentManager.get('permalinkManager').serialize().components;
+        return code;
+    }
+
+    function deserializeCode(kod) {
+        code = cloneDeep(kod);
+        code.state = undefined;
+        return code;
+    }
 
     cm.define('urlManager', [], function(cm) {
         var parser = document.createElement('a');
@@ -55,7 +67,6 @@
             return {};
         }
     });
-
 
     cm.define('mapsResourceServer', [], function() {
         return nsGmx.Auth.getResourceServer('geomixer');
@@ -143,34 +154,51 @@
         var wizardConfigModel = cm.get('wizardConfigModel');
         var layoutManager = cm.get('layoutManager');
 
-        var $container = layoutManager.getViewerContainer();
+        var Viewer = L.Class.extend({
+            includes: [L.Mixin.Events],
+            initialize: function(options) {
+                L.setOptions(this, options);
+                this._vcm = null;
 
-        var vcm;
-        var update = function(cfg) {
-            $container.empty();
-            var $mapContainer = $('<div>').addClass('editor-viewerContainer');
-            $container.append($mapContainer);
-            vcm = nsGmx.createGmxApplication($mapContainer.get(0), cfg);
-            vcm.create().then(function() {
-                layoutManager.expandSidebar();
-            });
-        };
+                this.update(this.options.wizardConfigModel.getConfig());
 
-        update(wizardConfigModel.getConfig());
-        wizardConfigModel.on('configchange', function(cfg) {
-            update(cfg);
-        });
+                this.options.wizardConfigModel.on('configchange', function(cfg) {
+                    this.update(cfg);
+                }.bind(this));
 
-        layoutManager.on('sidebarchange', function(isExpanded) {
-            vcm.get('map').invalidateSize();
-        });
-
-        return {
-            update: update,
+                this.options.layoutManager.on('sidebarchange', function(isExpanded) {
+                    this._vcm.get('map').invalidateSize();
+                }.bind(this));
+            },
+            update: function(cfg) {
+                this.options.container.innerHTML = '';
+                var mapContainerEl = L.DomUtil.create('div', 'editor-viewerContainer', this.options.container);
+                this._vcm = nsGmx.createGmxApplication(mapContainerEl, cfg);
+                this._vcm.create().then(function() {
+                    this.fire('created');
+                    this._vcm.get('map').on('zoomend', this.fire.bind(this, 'update'));
+                    this._vcm.get('map').on('dragend', this.fire.bind(this, 'update'));
+                    this.options.layoutManager.expandSidebar();
+                }.bind(this));
+            },
             getCm: function() {
-                return vcm;
+                return $.Deferred(function(def) {
+                    if (this._vcm) {
+                        def.resolve(this._vcm);
+                    } else {
+                        this.once('created', function() {
+                            def._resolve(this._vcm);
+                        });
+                    }
+                }.bind(this)).promise();
             }
-        };
+        });
+
+        return new Viewer({
+            container: layoutManager.getViewerContainer()[0],
+            layoutManager: layoutManager,
+            wizardConfigModel: wizardConfigModel
+        });
     });
 
     cm.define('sidebarPanel', ['layoutManager'], function() {
@@ -188,7 +216,8 @@
         }
     });
 
-    cm.define('codeEditor', ['wizardConfigModel', 'sidebarPanel', 'layoutManager'], function(cm) {
+    cm.define('codeEditor', ['wizardConfigModel', 'sidebarPanel', 'layoutManager', 'viewer'], function(cm) {
+        var viewer = cm.get('viewer');
         var wizardConfigModel = cm.get('wizardConfigModel');
         var layoutManager = cm.get('layoutManager');
         var $container = cm.get('sidebarPanel').getCodeEditorContainer();
@@ -200,13 +229,13 @@
         var codeEditor = ace.edit($aceContainer.get(0));
         codeEditor.setTheme("ace/theme/chrome");
         codeEditor.getSession().setMode("ace/mode/json");
-        codeEditor.setValue(JSON.stringify(wizardConfigModel.getConfig(), null, '    '));
+        codeEditor.setValue(JSON.stringify(deserializeCode(wizardConfigModel.getConfig()), null, '    '));
         codeEditor.selection.clearSelection();
         layoutManager.on('sidebarchange', function(expanded) {
             codeEditor.resize();
         });
         wizardConfigModel.on('configchange', function(cfg) {
-            codeEditor.setValue(JSON.stringify(cfg, null, '    '));
+            codeEditor.setValue(deserializeCode(JSON.stringify(cfg, null, '    ')));
             codeEditor.selection.clearSelection();
         });
         return codeEditor;
@@ -233,7 +262,8 @@
         return dropdownMenuWidget;
     });
 
-    cm.define('saveButton', ['toolbar', 'codeEditor', 'mapsResourceServer'], function(cm) {
+    cm.define('saveButton', ['toolbar', 'codeEditor', 'mapsResourceServer', 'viewer'], function(cm) {
+        var viewer = cm.get('viewer');
         var codeEditor = cm.get('codeEditor');
         var mapsResourceServer = cm.get('mapsResourceServer');
 
@@ -254,17 +284,19 @@
             }));
 
             if (jsonIsValid(codeEditor.getValue())) {
-                mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
-                    content: codeEditor.getValue()
-                }).then(function(response) {
-                    var viewr = origin.replace('editor.html', 'viewer.html');
-                    var unhash = viewr.indexOf('#') === -1 ? viewr : viewr.slice(0, viewr.indexOf('#'));
-                    var permalink = unhash + '?config=' + response.Result;
-                    $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
-                        permalink: permalink
-                    }));
-                }).fail(function() {
-                    $('#popover-save').html('unknown error');
+                viewer.getCm().then(function(vcm) {
+                    mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
+                        content: JSON.stringify(serializeCode(JSON.parse(codeEditor.getValue()), vcm))
+                    }).then(function(response) {
+                        var viewr = origin.replace('editor.html', 'viewer.html');
+                        var unhash = viewr.indexOf('#') === -1 ? viewr : viewr.slice(0, viewr.indexOf('#'));
+                        var permalink = unhash + '?config=' + response.Result;
+                        $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
+                            permalink: permalink
+                        }));
+                    }).fail(function() {
+                        $('#popover-save').html('unknown error');
+                    });
                 });
             } else {
                 $('#popover-save').html('invalid json');
@@ -282,7 +314,9 @@
         var codeEditor = cm.get('codeEditor');
         $('#btn-refresh').click(function(je) {
             if (jsonIsValid(codeEditor.getValue())) {
-                viewer.update(JSON.parse(codeEditor.getValue()));
+                viewer.getCm().then(function(vcm) {
+                    viewer.update(serializeCode(JSON.parse(codeEditor.getValue()), vcm));
+                });
             } else {
                 console.log('invalid json');
             }
