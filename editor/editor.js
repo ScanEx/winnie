@@ -12,6 +12,51 @@
         return JSON.parse(JSON.stringify(obj));
     };
 
+    cm.define('urlManager', [], function(cm) {
+        var parser = document.createElement('a');
+        parser.href = window.location.href;
+
+        var getQueryVariable = function(variable) {
+            var query = parser.search.substring(1);
+            var vars = query.split('&');
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) == variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+        };
+
+        return {
+            getParam: getQueryVariable
+        };
+    });
+
+    cm.define('permalinkConfig', ['urlManager'], function(cm, cb) {
+        var urlManager = cm.get('urlManager');
+        if (urlManager.getParam('config')) {
+            var oReq = new XMLHttpRequest();
+            oReq.onload = function(e) {
+                if (e.currentTarget.readyState === 4 && e.currentTarget.status === 200) {
+                    try {
+                        var rt = e.currentTarget.response || e.currentTarget.responseText;
+                        var jr = JSON.parse(rt.slice(1, -1));
+                        var cfg = JSON.parse(jr.Result);
+                        cb(cfg);
+                    } catch (e) {
+                        console.warn('invalid JSON');
+                        cb({});
+                    }
+                }
+            };
+            oReq.open('get', 'http://maps.kosmosnimki.ru/TinyReference/Get.ashx?id=' + urlManager.getParam('config'), true);
+            oReq.send();
+        } else {
+            return {};
+        }
+    });
+
+
     cm.define('mapsResourceServer', [], function() {
         return nsGmx.Auth.getResourceServer('geomixer');
     });
@@ -74,7 +119,8 @@
     });
 
     // changing this model occurs editor and viewer
-    cm.define('wizardConfigModel', [], function() {
+    cm.define('wizardConfigModel', ['permalinkConfig'], function() {
+        var permalinkConfig = cm.get('permalinkConfig');
         var ConfigModel = Backbone.Model.extend({
             initialize: function(cfg) {
                 this.setConfig(cfg);
@@ -90,7 +136,7 @@
             }
         });
 
-        return new ConfigModel(nsGmx.ConfigTemplates.map);
+        return new ConfigModel(_.isEmpty(permalinkConfig) ? nsGmx.ConfigTemplates.map : permalinkConfig);
     });
 
     cm.define('viewer', ['wizardConfigModel', 'layoutManager'], function(cm) {
@@ -269,11 +315,18 @@
         return $btn;
     });
 
-    cm.define('configWizard', ['layoutManager', 'wizardConfigModel'], function() {
-        var layoutManager = cm.get('layoutManager');
+    cm.define('configWizard', ['layoutManager', 'wizardConfigModel', 'permalinkConfig'], function() {
         var wizardConfigModel = cm.get('wizardConfigModel');
+        var permalinkConfig = cm.get('permalinkConfig');
+        var layoutManager = cm.get('layoutManager');
+
+        if (!_.isEmpty(permalinkConfig)) {
+            layoutManager.getWizardContainer().hide();
+        }
+
         var configWizard = new nsGmx.ConfigWizard();
         configWizard.appendTo(layoutManager.getWizardContainer());
+
         configWizard.on('configchange', function(cfg) {
             wizardConfigModel.setConfig(cfg);
             layoutManager.getWizardContainer().hide();
