@@ -97,6 +97,22 @@ calendarWidget | календарь |  | [CalendarWidget](https://github.com/Sca
 
 Объект с двумя необязательными ключами: `eng` и `rus`. Переопределяет описание слоя с учётом текущего языка.
 
+#### heatmap
+
+Отображает слой в виде хитмэпа путём применения Leaflet-плагина [Leaflet.Heat](https://github.com/Leaflet/Leaflet.heat)
+
+Включает все настройки плагина, а также функции [bindHeatmap()](https://github.com/ScanEx/Leaflet-GeoMixer/blob/master/documentation-rus.md#heatmap-options---%D0%BE%D0%BF%D1%86%D0%B8%D0%B8-heatmap) GeoMixer-а, т.е
+
+- `<Number|Function>maxHeatMapZoom` - Максимальный zoom на котором включен HeatMap слоя. (На всех zoom > maxZoom слой будет ображаться без HeatMap).
+- `<Number>intensityField` - Наименование атрибута значение которого используется для расчета интенсивности точки.
+- `<String>intensityScale` - Множитель используемый при расчете интенсивности точки.
+- `<Number>minOpacity` - минимальный предел прозрачности
+- `<Number>maxZoom` - zoom, при котором точки достигают максимальной интенсивности (по умолчанию - maxZoom карты)
+- `<Number>max` - максимальная интенсивность точки, по умолчанию 1.0
+- `<Number>radius` - радиус точек хитмапа, по умолчанию 25
+- `<Number>blur` - коэффициент размытия, по умолчанию 15
+- `<Object>gradient` - настройки градиента, например {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+
 ### Пример секции `layers`:
 
 ```json
