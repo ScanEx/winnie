@@ -77,5 +77,13 @@
         return editButtonEl;
     });
 
+    cm.define('globals', ['mapApplicationConstructor'], function() {
+        var macm = cm.get('mapApplicationConstructor');
+        window.macm = macm;
+        window.map = macm.get('map');
+        window.cal = macm.get('calendar');
+        return null;
+    });
+
     cm.create();
 })();
