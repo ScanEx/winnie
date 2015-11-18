@@ -5,7 +5,7 @@ nsGmx.ConfigTemplates = {};
 nsGmx.ConfigTemplates.map = {
     app: {
         gmxMap: {
-            mapID: '37TYY',
+            mapID: 'DA2C1A3C05704A5F850F397AFED5CECE',
             apiKey: 'W4IH6K7CJ4'
         },
         zoomControl: true,
@@ -13,23 +13,13 @@ nsGmx.ConfigTemplates.map = {
         centerControl: {
             color: '#121212'
         }
-    },
-    state: {
-        map: {
-            position: {
-                x: 37.619934,
-                y: 55.750303,
-                z: 8
-            }
-        },
-        language: 'rus'
     }
 };
 
 nsGmx.ConfigTemplates.sidebar = {
     app: {
         gmxMap: {
-            mapID: '37TYY',
+            mapID: 'DA2C1A3C05704A5F850F397AFED5CECE',
             apiKey: 'W4IH6K7CJ4'
         },
         zoomControl: true,
@@ -38,23 +28,13 @@ nsGmx.ConfigTemplates.sidebar = {
             color: '#121212'
         },
         layersTreeWidget: {}
-    },
-    state: {
-        map: {
-            position: {
-                x: 37.619934,
-                y: 55.750303,
-                z: 8
-            }
-        },
-        language: 'rus'
     }
 };
 
 nsGmx.ConfigTemplates.storytelling = {
     app: {
         gmxMap: {
-            mapID: '37TYY',
+            mapID: 'DA2C1A3C05704A5F850F397AFED5CECE',
             apiKey: 'W4IH6K7CJ4'
         },
         zoomControl: false,
@@ -62,15 +42,5 @@ nsGmx.ConfigTemplates.storytelling = {
         centerControl: false,
         baseLayersControl: false,
         storytellingWidget: {}
-    },
-    state: {
-        map: {
-            position: {
-                x: 37.619934,
-                y: 55.750303,
-                z: 8
-            }
-        },
-        language: 'rus'
     }
 };
