@@ -12,17 +12,17 @@
         return JSON.parse(JSON.stringify(obj));
     }
 
-    function serializeCode(kod, viewerComponentManager) {
-        code = cloneDeep(kod);
-        code.state = viewerComponentManager.get('permalinkManager').serialize().components;
-        return code;
-    }
-
-    function deserializeCode(kod) {
-        code = cloneDeep(kod);
-        code.state = undefined;
-        return code;
-    }
+    var ConfigModel = Backbone.Model.extend({
+        initialize: function(cfg) {
+            this.setValue(cfg);
+        },
+        setValue: function(val) {
+            this.set('value', val);
+        },
+        getValue: function() {
+            return this.get('value');
+        }
+    })
 
     cm.define('urlManager', [], function(cm) {
         var parser = document.createElement('a');
@@ -96,10 +96,10 @@
                 return $rootContainer;
             },
             getSidebarContainer: function() {
-                return $sidebarContainer;
+                return $sidebarContainer.show();
             },
             getViewerContainer: function() {
-                return $viewerContainer;
+                return $viewerContainer.show();
             },
             expandSidebar: function() {
                 $sidebarContainer.addClass('editor_sidebarExpanded');
@@ -122,37 +122,25 @@
                 return $sidebarContainer.hasClass('editor_sidebarExpanded');
             },
             getWizardContainer: function() {
-                return $wizardContainer;
+                return $wizardContainer.show();
             }
         }, Backbone.Events);
 
         return lm;
     });
 
-    // changing this model occurs editor and viewer
-    cm.define('wizardConfigModel', ['permalinkConfig'], function() {
-        var permalinkConfig = cm.get('permalinkConfig');
-        var ConfigModel = Backbone.Model.extend({
-            initialize: function(cfg) {
-                this.setConfig(cfg);
-                this.on('change:config', function() {
-                    this.trigger('configchange', this.get('config'));
-                }.bind(this));
-            },
-            setConfig: function(cfg) {
-                this.set('config', cfg);
-            },
-            getConfig: function() {
-                return cloneDeep(this.get('config'));
-            }
-        });
-
-        return new ConfigModel(_.isEmpty(permalinkConfig) ? nsGmx.ConfigTemplates.map : permalinkConfig);
+    cm.define('appConfigModel', [], function() {
+        return new ConfigModel({});
     });
 
-    cm.define('viewer', ['wizardConfigModel', 'layoutManager'], function(cm) {
-        var wizardConfigModel = cm.get('wizardConfigModel');
+    cm.define('stateConfigModel', [], function() {
+        return new ConfigModel({});
+    });
+
+    cm.define('viewer', ['layoutManager', 'appConfigModel', 'stateConfigModel'], function(cm) {
         var layoutManager = cm.get('layoutManager');
+        var appConfigModel = cm.get('appConfigModel');
+        var stateConfigModel = cm.get('stateConfigModel');
 
         var Viewer = L.Class.extend({
             includes: [L.Mixin.Events],
@@ -160,24 +148,25 @@
                 L.setOptions(this, options);
                 this._vcm = null;
 
-                this.update(this.options.wizardConfigModel.getConfig());
-
-                this.options.wizardConfigModel.on('configchange', function(cfg) {
-                    this.update(cfg);
-                }.bind(this));
+                this.options.appConfigModel.on('change', this.update.bind(this));
+                this.options.stateConfigModel.on('change', this.update.bind(this));
+                this.update();
 
                 this.options.layoutManager.on('sidebarchange', function(isExpanded) {
                     this._vcm.get('map').invalidateSize();
                 }.bind(this));
             },
-            update: function(cfg) {
+            update: function() {
+                if (this._changing) {
+                    return;
+                }
+                var cfg = _.extend({}, this.options.appConfigModel.getValue(), this.options.stateConfigModel.getValue());
                 this.options.container.innerHTML = '';
                 var mapContainerEl = L.DomUtil.create('div', 'editor-viewerContainer', this.options.container);
                 this._vcm = nsGmx.createGmxApplication(mapContainerEl, cfg);
                 this._vcm.create().then(function() {
                     this.fire('created');
-                    this._vcm.get('map').on('zoomend', this.fire.bind(this, 'update'));
-                    this._vcm.get('map').on('dragend', this.fire.bind(this, 'update'));
+                    this._bindUpdatingEvents();
                     this.options.layoutManager.expandSidebar();
                 }.bind(this));
             },
@@ -191,13 +180,25 @@
                         });
                     }
                 }.bind(this)).promise();
+            },
+            _bindUpdatingEvents: function() {
+                this._vcm.get('map').on('zoomend', this._updateStateConfigModel.bind(this));
+                this._vcm.get('map').on('dragend', this._updateStateConfigModel.bind(this));
+            },
+            _updateStateConfigModel: function() {
+                this._changing = true;
+                this.options.stateConfigModel.setValue({
+                    state: this._vcm.get('permalinkManager').serialize().components
+                });
+                this._changing = false;
             }
         });
 
         return new Viewer({
             container: layoutManager.getViewerContainer()[0],
             layoutManager: layoutManager,
-            wizardConfigModel: wizardConfigModel
+            appConfigModel: appConfigModel,
+            stateConfigModel: stateConfigModel
         });
     });
 
@@ -216,9 +217,9 @@
         }
     });
 
-    cm.define('codeEditor', ['wizardConfigModel', 'sidebarPanel', 'layoutManager', 'viewer'], function(cm) {
+    cm.define('codeEditor', ['appConfigModel', 'sidebarPanel', 'layoutManager', 'viewer'], function(cm) {
         var viewer = cm.get('viewer');
-        var wizardConfigModel = cm.get('wizardConfigModel');
+        var appConfigModel = cm.get('appConfigModel');
         var layoutManager = cm.get('layoutManager');
         var $container = cm.get('sidebarPanel').getCodeEditorContainer();
         var $aceContainer = $('<div>')
@@ -229,13 +230,13 @@
         var codeEditor = ace.edit($aceContainer.get(0));
         codeEditor.setTheme("ace/theme/chrome");
         codeEditor.getSession().setMode("ace/mode/json");
-        codeEditor.setValue(JSON.stringify(deserializeCode(wizardConfigModel.getConfig()), null, '    '));
+        codeEditor.setValue(JSON.stringify(appConfigModel.getValue(), null, '    '));
         codeEditor.selection.clearSelection();
         layoutManager.on('sidebarchange', function(expanded) {
             codeEditor.resize();
         });
-        wizardConfigModel.on('configchange', function(cfg) {
-            codeEditor.setValue(deserializeCode(JSON.stringify(cfg, null, '    ')));
+        appConfigModel.on('change', function() {
+            codeEditor.setValue(JSON.stringify(appConfigModel.getValue(), null, '    '));
             codeEditor.selection.clearSelection();
         });
         return codeEditor;
@@ -262,9 +263,10 @@
         return dropdownMenuWidget;
     });
 
-    cm.define('saveButton', ['toolbar', 'codeEditor', 'mapsResourceServer', 'viewer'], function(cm) {
+    cm.define('saveButton', ['toolbar', 'appConfigModel', 'mapsResourceServer', 'viewer'], function(cm) {
         var viewer = cm.get('viewer');
-        var codeEditor = cm.get('codeEditor');
+        var appConfigModel = cm.get('appConfigModel');
+        var stateConfigModel = cm.get('stateConfigModel');
         var mapsResourceServer = cm.get('mapsResourceServer');
 
         $('#btn-save').popover({
@@ -283,10 +285,11 @@
                 permalink: false
             }));
 
-            if (jsonIsValid(codeEditor.getValue())) {
+            if (appConfigModel.getValue()) {
                 viewer.getCm().then(function(vcm) {
+                    var cfg = _.extend({}, appConfigModel.getValue(), stateConfigModel.getValue());
                     mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
-                        content: JSON.stringify(serializeCode(JSON.parse(codeEditor.getValue()), vcm))
+                        content: JSON.stringify(cfg)
                     }).then(function(response) {
                         var viewr = origin.replace('editor.html', 'viewer.html');
                         var unhash = viewr.indexOf('#') === -1 ? viewr : viewr.slice(0, viewr.indexOf('#'));
@@ -309,14 +312,12 @@
         return $('#btn-save');
     });
 
-    cm.define('refreshButton', ['toolbar', 'codeEditor', 'viewer'], function() {
-        var viewer = cm.get('viewer');
+    cm.define('refreshButton', ['toolbar', 'codeEditor', 'appConfigModel'], function() {
+        var appConfigModel = cm.get('appConfigModel');
         var codeEditor = cm.get('codeEditor');
         $('#btn-refresh').click(function(je) {
             if (jsonIsValid(codeEditor.getValue())) {
-                viewer.getCm().then(function(vcm) {
-                    viewer.update(serializeCode(JSON.parse(codeEditor.getValue()), vcm));
-                });
+                appConfigModel.setValue(JSON.parse(codeEditor.getValue()));
             } else {
                 console.log('invalid json');
             }
@@ -349,8 +350,8 @@
         return $btn;
     });
 
-    cm.define('configWizard', ['layoutManager', 'wizardConfigModel', 'permalinkConfig'], function() {
-        var wizardConfigModel = cm.get('wizardConfigModel');
+    cm.define('configWizard', ['layoutManager', 'appConfigModel', 'permalinkConfig'], function() {
+        var appConfigModel = cm.get('appConfigModel');
         var permalinkConfig = cm.get('permalinkConfig');
         var layoutManager = cm.get('layoutManager');
 
@@ -362,10 +363,17 @@
         configWizard.appendTo(layoutManager.getWizardContainer());
 
         configWizard.on('configchange', function(cfg) {
-            wizardConfigModel.setConfig(cfg);
+            appConfigModel.setValue(cfg);
             layoutManager.getWizardContainer().hide();
         });
         return configWizard;
+    });
+
+    cm.define('globals', ['appConfigModel', 'stateConfigModel'], function(cm) {
+        window.acm = cm.get('appConfigModel');
+        window.scm = cm.get('stateConfigModel');
+        window.lm = cm.get('layoutManager');
+        return null;
     });
 
     cm.create();
