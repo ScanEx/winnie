@@ -1,4 +1,12 @@
 (function() {
+    cm.define('winnieConfig', [], function(cm, cb) {
+        $.ajax('resources/winnieConfig.json').then(function(cfg) {
+            cb(cfg);
+        }, function() {
+            cb(false);
+        });
+    });
+
     cm.define('urlManager', [], function(cm) {
         var parser = document.createElement('a');
         parser.href = window.location.href;
@@ -65,14 +73,16 @@
         });
     });
 
-    cm.define('editButton', ['mapApplicationConstructor', 'permalinkConfig', 'layoutManager'], function(cm) {
+    cm.define('editButton', ['mapApplicationConstructor', 'permalinkConfig', 'layoutManager', 'winnieConfig', 'urlManager'], function(cm) {
         var permalinkConfig = cm.get('permalinkConfig');
         var layoutManager = cm.get('layoutManager');
+        var winnieConfig = cm.get('winnieConfig');
+        var urlManager = cm.get('urlManager');
 
         var editButtonContainerEl = layoutManager.getEditButtonContainer();
         var editButtonEl = L.DomUtil.create('a', 'editButton', editButtonContainerEl);
         editButtonEl.innerHTML = L.gmxLocale.getLanguage() === 'rus' ? 'редактировать' : 'edit';
-        editButtonEl.setAttribute('href', window.location.href.replace('viewer', 'editor'));
+        editButtonEl.setAttribute('href', winnieConfig.editorUrl + '?config=' + urlManager.getParam('config'));
 
         return editButtonEl;
     });

@@ -62,6 +62,14 @@
         };
     });
 
+    cm.define('winnieConfig', [], function(cm, cb) {
+        $.ajax('resources/winnieConfig.json').then(function(cfg) {
+            cb(cfg);
+        }, function() {
+            cb(false);
+        });
+    });
+
     cm.define('permalinkConfig', ['urlManager'], function(cm, cb) {
         var urlManager = cm.get('urlManager');
         if (urlManager.getParam('config')) {
@@ -295,8 +303,9 @@
         return dropdownMenuWidget;
     });
 
-    cm.define('saveButton', ['toolbar', 'appConfigModel', 'mapsResourceServer', 'viewer'], function(cm) {
+    cm.define('saveButton', ['toolbar', 'appConfigModel', 'mapsResourceServer', 'viewer', 'winnieConfig'], function(cm) {
         var viewer = cm.get('viewer');
+        var winnieConfig = cm.get('winnieConfig');
         var appConfigModel = cm.get('appConfigModel');
         var stateConfigModel = cm.get('stateConfigModel');
         var mapsResourceServer = cm.get('mapsResourceServer');
@@ -323,9 +332,7 @@
                     mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
                         content: JSON.stringify(cfg)
                     }).then(function(response) {
-                        var viewr = origin.replace('editor.html', 'viewer.html');
-                        var unhash = viewr.indexOf('#') === -1 ? viewr : viewr.slice(0, viewr.indexOf('#'));
-                        var permalink = unhash + '?config=' + response.Result;
+                        var permalink = window.location.protocol + '//' + window.location.host + winnieConfig.viewerUrl + '?config=' + response.Result;
                         $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
                             permalink: permalink
                         }));
