@@ -222,8 +222,9 @@
                 }.bind(this)).promise();
             },
             _bindUpdatingEvents: function() {
-                this._vcm.get('map').on('zoomend', this._updateStateConfigModel.bind(this));
-                this._vcm.get('map').on('dragend', this._updateStateConfigModel.bind(this));
+                this._vcm.get('baseLayersManager').on('baselayeractiveids baselayerchange', this._updateStateConfigModel.bind(this));
+                this._vcm.get('layersTree').on('childChange', this._updateStateConfigModel.bind(this));
+                this._vcm.get('map').on('dragend zoomend', this._updateStateConfigModel.bind(this));
             },
             _updateStateConfigModel: function() {
                 this._changing = true;
