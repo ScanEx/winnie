@@ -86,6 +86,14 @@
         }
     });
 
+    cm.define('defaultConfig', [], function(cm, cb) {
+        $.ajax('resources/defaultMapConfig.json').then(function(cfg) {
+            cb(cfg);
+        }, function() {
+            cb({});
+        });
+    });
+
     cm.define('mapsResourceServer', [], function() {
         return nsGmx.Auth.getResourceServer('geomixer');
     });
@@ -147,21 +155,17 @@
         return lm;
     });
 
-    cm.define('appConfigModel', ['permalinkConfig'], function(cm) {
+    cm.define('appConfigModel', ['permalinkConfig', 'defaultConfig'], function(cm) {
         var permalinkConfig = cm.get('permalinkConfig');
-        var appConfigModel = new AppConfigModel({});
-        if (!_.isEmpty(permalinkConfig)) {
-            appConfigModel.setValue(permalinkConfig);
-        }
+        var defaultConfig = cm.get('defaultConfig');
+        var appConfigModel = new AppConfigModel(_.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig);
         return appConfigModel;
     });
 
-    cm.define('stateConfigModel', ['permalinkConfig'], function() {
+    cm.define('stateConfigModel', ['permalinkConfig', 'defaultConfig'], function() {
         var permalinkConfig = cm.get('permalinkConfig');
-        var stateConfigModel = new StateConfigModel({});
-        if (!_.isEmpty(permalinkConfig)) {
-            stateConfigModel.setValue(permalinkConfig);
-        }
+        var defaultConfig = cm.get('defaultConfig');
+        var stateConfigModel = new StateConfigModel(_.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig);
         return stateConfigModel;
     });
 
