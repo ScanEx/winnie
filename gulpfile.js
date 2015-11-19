@@ -291,8 +291,8 @@ require('./external/GMXBuilder')(gulp, {
         srcDir: './viewer'
     }])
 }, {
-    id: 'editor',
-    htmlfile: 'html/editor.html',
+    id: 'index',
+    htmlfile: 'html/index.html',
     components: coreComponents.concat([
         aceEditor,
         dropdownMenuWidget,
