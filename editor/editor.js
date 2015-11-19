@@ -21,8 +21,26 @@
         },
         getValue: function() {
             return this.get('value');
+        },
+        _setProperties: function(obj, props) {
+            var val = {};
+            for (var i = 0; i < props.length; i++) {
+                obj[props[i]] && (val[props[i]] = obj[props[i]]); 
+            }
         }
-    })
+    });
+
+    var AppConfigModel = ConfigModel.extend({
+        setValue: function(val) {
+            ConfigModel.prototype.setValue.call(this, _.pick(val, 'app', 'layers', 'user'));
+        }
+    });
+
+    var StateConfigModel = ConfigModel.extend({
+        setValue: function(val) {
+            ConfigModel.prototype.setValue.call(this, _.pick(val, 'state'));
+        }
+    });
 
     cm.define('urlManager', [], function(cm) {
         var parser = document.createElement('a');
@@ -122,19 +140,29 @@
                 return $sidebarContainer.hasClass('editor_sidebarExpanded');
             },
             getWizardContainer: function() {
-                return $wizardContainer.show();
+                return $wizardContainer;
             }
         }, Backbone.Events);
 
         return lm;
     });
 
-    cm.define('appConfigModel', [], function() {
-        return new ConfigModel({});
+    cm.define('appConfigModel', ['permalinkConfig'], function(cm) {
+        var permalinkConfig = cm.get('permalinkConfig');
+        var appConfigModel = new AppConfigModel({});
+        if (!_.isEmpty(permalinkConfig)) {
+            appConfigModel.setValue(permalinkConfig);
+        }
+        return appConfigModel;
     });
 
-    cm.define('stateConfigModel', [], function() {
-        return new ConfigModel({});
+    cm.define('stateConfigModel', ['permalinkConfig'], function() {
+        var permalinkConfig = cm.get('permalinkConfig');
+        var stateConfigModel = new StateConfigModel({});
+        if (!_.isEmpty(permalinkConfig)) {
+            stateConfigModel.setValue(permalinkConfig);
+        }
+        return stateConfigModel;
     });
 
     cm.define('viewer', ['layoutManager', 'appConfigModel', 'stateConfigModel'], function(cm) {
