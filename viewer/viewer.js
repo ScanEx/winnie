@@ -92,6 +92,10 @@
         window.macm = macm;
         window.map = macm.get('map');
         window.cal = macm.get('calendar');
+        window.lt = macm.get('layersTree');
+        window.lh = macm.get('layersHash');
+        window.ld = new nsGmx.LayersDebugger(macm.get('layersTree'));
+        
         return null;
     });
 

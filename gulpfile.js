@@ -184,6 +184,8 @@ var layersTree = {
     build: true
 };
 
+var layersDebugger = './external/GMXCommonComponents/LayersDebugger';
+
 var gmxWidget = {
     id: 'GmxWidget',
     srcDir: './external/GMXCommonComponents/GmxWidget',
@@ -256,6 +258,7 @@ var coreComponents = [
     gmxBaseLayersManager,
     gmxControls,
     layersTree,
+    layersDebugger,
     commonStyles,
     popover,
     translations,
