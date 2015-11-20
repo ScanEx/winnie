@@ -409,11 +409,23 @@
         return configWizard;
     });
 
-    cm.define('globals', ['appConfigModel', 'stateConfigModel'], function(cm) {
+    cm.define('globals', ['appConfigModel', 'stateConfigModel', 'viewer'], function(cm) {
         window.acm = cm.get('appConfigModel');
         window.scm = cm.get('stateConfigModel');
         window.lm = cm.get('layoutManager');
+
+        cm.get('viewer').on('created', updateViewerGlobals);
+        updateViewerGlobals();
+
         return null;
+
+        function updateViewerGlobals() {
+            cm.get('viewer').getCm().then(function(cm) {
+                var macm = window.macm = cm;
+                window.lt = macm.get('layersTree');
+                window.ld = new nsGmx.LayersDebugger(macm.get('layersTree'));
+            });
+        }
     });
 
     cm.create();
