@@ -63,7 +63,7 @@ Download the library and customize the source code if you like, using the Winnie
 "Winnie" project was supported by WWF
 
 ### Описание
-Простой способ создавать картографические приложения на основе, используя API [GeoMixer](http://geomixer.ru). Поддерживает набор готовых контролов и виджетов для [Leaflet](http://leaflet.js)
+Простой способ создавать картографические приложения, используя API [GeoMixer](http://geomixer.ru). Поддерживает набор готовых контролов и виджетов для [Leaflet](http://leaflet.js)
 
 ### Возможности
 - Встроенная визуализация данных с помощью Геомиксер (подробнее о платформе http://geomixer.ru)
