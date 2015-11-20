@@ -6,3 +6,4 @@ bower_components
 *.sublime-workspace
 *.html
 docs/*.html
+!gallery.html
