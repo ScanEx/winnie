@@ -216,7 +216,7 @@
                         def.resolve(this._vcm);
                     } else {
                         this.once('created', function() {
-                            def._resolve(this._vcm);
+                            def.resolve(this._vcm);
                         });
                     }
                 }.bind(this)).promise();
