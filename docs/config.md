@@ -8,16 +8,18 @@
 
 В итоге корень конфига выглядит следующим образом:
 
-```javascript
+```json
 {
-    "app": { }
-    "state": { }
-    "layers": { }
+    "app": { },
+    "state": { },
+    "layers": { },
     "user": { }
 }
 ```
 
 Ни один из ключей не является обязательным.
+
+Конфигурационный файл описывается в формате json. Это значит, что каждый ключ должен быть заключён в двойные кавычки, а в качестве значения может быть строка в двойных кавычках, число, булево значение (`true`/`false`) или объект `{ ... }`. Пары `ключ: значение` разделяются запятыми. Лишних запятых быть не должно. Комментарии не допускаются.
 
 ## Секция app
 
@@ -60,12 +62,12 @@ calendarWidget | календарь |  | [CalendarWidget](https://github.com/Sca
 Ниже приведен список типичных параметров для каждого компонента, которые могут настраиваться пользователем
 
 #### map
-```javascript
+```json
 {
-    position: {
-        x: <Number>,    // долгота
-        y: <Number>,    // широта
-        z: <Number>     // зум
+    "position": {
+        "x": 50,
+        "y": 30,
+        "z": 3
     }
 }
 ```
@@ -111,7 +113,7 @@ calendarWidget | календарь |  | [CalendarWidget](https://github.com/Sca
 - `<Number>max` - максимальная интенсивность точки, по умолчанию 1.0
 - `<Number>radius` - радиус точек хитмапа, по умолчанию 25
 - `<Number>blur` - коэффициент размытия, по умолчанию 15
-- `<Object>gradient` - настройки градиента, например {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+- `<Object>gradient` - настройки градиента, например {0.4: "blue", 0.65: "lime", 1: "red"}
 
 ### Пример секции `layers`:
 
@@ -143,36 +145,36 @@ calendarWidget | календарь |  | [CalendarWidget](https://github.com/Sca
 
 Если его использовать "как есть", то получим пустую карту с включёнными контролами и виджетом подложек.
 
-```javascript
+```json
 {
-    app: {
-        gmxMap: {
-            setZIndex: true
+    "app": {
+        "gmxMap": {
+            "setZIndex": true
         },
-        hideControl: {},
-        zoomControl: {},
-        centerControl: {
-            color: 'black'
+        "hideControl": {},
+        "zoomControl": {},
+        "centerControl": {
+            "color": "black"
         },
-        bottomControl: {},
-        locationControl: {},
-        copyrightControl: {},
-        baseLayersControl: {},
-        layersMapper: {},
-        layersTreeWidget: false,
-        bookmarksWidget: false
-        storytellingWidget: false,
-        sidebarWidget: false,
+        "bottomControl": {},
+        "locationControl": {},
+        "copyrightControl": {},
+        "baseLayersControl": {},
+        "layersMapper": {},
+        "layersTreeWidget": false,
+        "bookmarksWidget": false,
+        "storytellingWidget": false,
+        "sidebarWidget": false,
     },
-    state: {
-        map: {
-            position: {
-                x: 82,
-                y: 53,
-                z: 3
+    "state": {
+        "map": {
+            "position": {
+                "x": 82,
+                "y": 53,
+                "z": 3
             }
         },
-        language: 'rus'
+        "language": "rus"
     }
 }
 ```
