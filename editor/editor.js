@@ -13,19 +13,23 @@
     }
 
     var ConfigModel = Backbone.Model.extend({
-        initialize: function(cfg) {
+        initialize: function(cfg, extension) {
+            this.extension = extension || {};
             this.setValue(cfg);
         },
         setValue: function(val) {
-            this.set('value', val);
+            this.set('value', $.extend(true, val, this.extension));
         },
         getValue: function() {
+            return this.get('value');
+        },
+        getVisibleValue: function() {
             return this.get('value');
         },
         _setProperties: function(obj, props) {
             var val = {};
             for (var i = 0; i < props.length; i++) {
-                obj[props[i]] && (val[props[i]] = obj[props[i]]); 
+                obj[props[i]] && (val[props[i]] = obj[props[i]]);
             }
         }
     });
@@ -163,18 +167,33 @@
         return lm;
     });
 
-    cm.define('appConfigModel', ['permalinkConfig', 'defaultConfig'], function(cm) {
+    cm.define('appConfigModel', ['permalinkConfig', 'defaultConfig', 'winnieConfig'], function(cm) {
         var permalinkConfig = cm.get('permalinkConfig');
         var defaultConfig = cm.get('defaultConfig');
-        var appConfigModel = new AppConfigModel(_.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig);
-        return appConfigModel;
+        var winnieConfig = cm.get('winnieConfig');
+
+        return new AppConfigModel(
+            _.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig,
+            getMirrorExtension(winnieConfig.appMirrors)
+        );
+
+        function getMirrorExtension(mirrors) {
+            for (var mirror in mirrors) {
+                if (
+                    mirrors.hasOwnProperty(mirror) &&
+                    window.location.host.indexOf(mirror) !== -1
+                ) {
+                    return mirrors[mirror];
+                }
+            }
+            return {};
+        }
     });
 
     cm.define('stateConfigModel', ['permalinkConfig', 'defaultConfig'], function() {
         var permalinkConfig = cm.get('permalinkConfig');
         var defaultConfig = cm.get('defaultConfig');
-        var stateConfigModel = new StateConfigModel(_.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig);
-        return stateConfigModel;
+        return new StateConfigModel(_.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig);
     });
 
     cm.define('viewer', ['layoutManager', 'appConfigModel', 'stateConfigModel'], function(cm) {
