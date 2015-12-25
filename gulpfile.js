@@ -119,7 +119,9 @@ var gmxIconLayers = {
 
 var componentsManager = {
     id: 'ComponentsManager',
-    srcDir: './external/GMXCommonComponents/ComponentsManager'
+    srcDir: './external/GMXCommonComponents/ComponentsManager',
+    distDir: './build',
+    build: true
 };
 
 var utils = {
@@ -217,6 +219,12 @@ var layersTreeWidget = {
     build: true
 };
 
+var dateInterval = {
+    id: 'DateInterval',
+    srcDir: './external/GMXCommonComponents/DateInterval',
+    build: false
+};
+
 var calendarWidget = {
     id: 'CalendarWidget',
     srcDir: './external/GMXCommonComponents/CalendarWidget',
@@ -271,6 +279,7 @@ var coreComponents = [
     switchingCollectionWidget,
     sidebar,
     layersTreeWidget,
+    dateInterval,
     calendarWidget,
     bookmarksWidget,
     storytellingWidget,
