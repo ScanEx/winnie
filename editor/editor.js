@@ -37,6 +37,13 @@
     var AppConfigModel = ConfigModel.extend({
         setValue: function(val) {
             ConfigModel.prototype.setValue.call(this, _.pick(val, 'app', 'layers', 'user'));
+        },
+        getVisibleValue: function() {
+            var value = JSON.parse(JSON.stringify(this.getValue()));
+            if (value && value.app && value.app.gmxMap && value.app.gmxMap.apiKey) {
+                delete value.app.gmxMap.apiKey;
+            }
+            return value;
         }
     });
 
@@ -290,13 +297,13 @@
         var codeEditor = ace.edit($aceContainer.get(0));
         codeEditor.setTheme("ace/theme/chrome");
         codeEditor.getSession().setMode("ace/mode/json");
-        codeEditor.setValue(JSON.stringify(appConfigModel.getValue(), null, '    '));
+        codeEditor.setValue(JSON.stringify(appConfigModel.getVisibleValue(), null, '    '));
         codeEditor.selection.clearSelection();
         layoutManager.on('sidebarchange', function(expanded) {
             codeEditor.resize();
         });
         appConfigModel.on('change', function() {
-            codeEditor.setValue(JSON.stringify(appConfigModel.getValue(), null, '    '));
+            codeEditor.setValue(JSON.stringify(appConfigModel.getVisibleValue(), null, '    '));
             codeEditor.selection.clearSelection();
         });
         return codeEditor;
