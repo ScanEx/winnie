@@ -51,8 +51,10 @@ var leaflet = {
 };
 
 var markercluster = {
-    bowerComponent: 'leaflet.markercluster',
-    distFiles: ['dist/MarkerCluster.css', 'dist/MarkerCluster.Default.css', 'dist/leaflet.markercluster.js']
+    srcDir: './external/leaflet.markercluster',
+    distFiles: ['dist/MarkerCluster.css', 'dist/MarkerCluster.Default.css', 'dist/leaflet.markercluster.js'],
+    build: true,
+    watch: true
 };
 
 var heatmap = {
