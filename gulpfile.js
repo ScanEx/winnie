@@ -51,6 +51,7 @@ var leaflet = {
 };
 
 var markercluster = {
+    id: 'leaflet.markercluster',
     srcDir: './external/leaflet.markercluster',
     distFiles: ['dist/MarkerCluster.css', 'dist/MarkerCluster.Default.css', 'dist/leaflet.markercluster.js'],
     build: true,
