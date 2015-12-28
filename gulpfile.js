@@ -50,6 +50,12 @@ var leaflet = {
     ]
 };
 
+var leafletActiveArea = {
+    id: 'Leaflet-active-area',
+    bowerComponent: 'Mappy/Leaflet-active-area',
+    distFiles: ['./src/leaflet.activearea.js']
+};
+
 var markercluster = {
     id: 'leaflet.markercluster',
     srcDir: './external/leaflet.markercluster',
@@ -262,6 +268,7 @@ var coreComponents = [
     backbone,
     thorax,
     leaflet,
+    leafletActiveArea,
     markercluster,
     heatmap,
     leafletGeomixer,
