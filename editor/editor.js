@@ -229,8 +229,11 @@
                 var cfg = _.extend({}, this.options.appConfigModel.getValue(), this.options.stateConfigModel.getValue());
                 this.options.container.innerHTML = '';
                 var mapContainerEl = L.DomUtil.create('div', 'editor-viewerContainer', this.options.container);
-                this._vcm = nsGmx.createGmxApplication(mapContainerEl, cfg);
-                this._vcm.create().then(function() {
+                this._vcm = null;
+                var vcm = nsGmx.createGmxApplication(mapContainerEl, cfg);
+                vcm.create().then(function() {
+                    console.log('test');
+                    this._vcm = vcm;
                     this.fire('created');
                     this._bindUpdatingEvents();
                     this.options.layoutManager.expandSidebar();
@@ -417,23 +420,30 @@
         return $btn;
     });
 
-    cm.define('configWizard', ['layoutManager', 'appConfigModel', 'permalinkConfig'], function() {
+    cm.define('configWizard', ['layoutManager', 'appConfigModel', 'permalinkConfig', 'viewer'], function(cm, cb) {
         var appConfigModel = cm.get('appConfigModel');
         var permalinkConfig = cm.get('permalinkConfig');
         var layoutManager = cm.get('layoutManager');
+        var viewer = cm.get('viewer')
 
         if (!_.isEmpty(permalinkConfig)) {
             layoutManager.getWizardContainer().hide();
         }
 
-        var configWizard = new nsGmx.ConfigWizard();
-        configWizard.appendTo(layoutManager.getWizardContainer());
+        layoutManager.getWizardContainer().html('loading..');
+        layoutManager.getWizardContainer().addClass('editor-wizardContainer_loading');
+        viewer.getCm().then(function() {
+            var configWizard = new nsGmx.ConfigWizard();
+            layoutManager.getWizardContainer().empty();
+            layoutManager.getWizardContainer().removeClass('editor-wizardContainer_loading');
+            configWizard.appendTo(layoutManager.getWizardContainer());
 
-        configWizard.on('configchange', function(cfg) {
-            appConfigModel.setValue(cfg);
-            layoutManager.getWizardContainer().hide();
+            configWizard.on('configchange', function(cfg) {
+                appConfigModel.setValue(cfg);
+                layoutManager.getWizardContainer().hide();
+            });
+            cb(configWizard);
         });
-        return configWizard;
     });
 
     cm.define('globals', ['appConfigModel', 'stateConfigModel', 'viewer'], function(cm) {
