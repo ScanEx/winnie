@@ -317,7 +317,7 @@
                 id: 'btn-refresh',
                 fonticon: 'icon-refresh'
             }, {
-                title: 'Save',
+                title: 'Share',
                 id: 'btn-save',
                 fonticon: 'icon-link'
             }, {
@@ -330,45 +330,46 @@
         return dropdownMenuWidget;
     });
 
-    cm.define('saveButton', ['toolbar', 'appConfigModel', 'mapsResourceServer', 'viewer', 'winnieConfig'], function(cm) {
+    cm.define('shareButton', ['toolbar', 'appConfigModel', 'mapsResourceServer', 'viewer', 'winnieConfig'], function(cm) {
         var viewer = cm.get('viewer');
         var winnieConfig = cm.get('winnieConfig');
         var appConfigModel = cm.get('appConfigModel');
         var stateConfigModel = cm.get('stateConfigModel');
         var mapsResourceServer = cm.get('mapsResourceServer');
 
+        var shareDialogContainer = $('<div>').addClass('shareDialogContainer');
+
+        var shareDialog = new nsGmx.ShareIconControl.ShareDialog({
+            permalinkUrlTemplate: '{{origin}}viewer.html?config={{permalinkId}}',
+            embeddedUrlTemplate: '{{origin}}viewer.html{{#if permlalinkId}}?config={{permlalinkId}}{{/if}}',
+            previewUrlTemplate: '{{origin}}iframePreview.html?width={{width}}&height={{height}}&url={{{embeddedUrl}}}',
+            embedCodeTemplate: '<iframe src="{{{embeddedUrl}}}" width="{{width}}" height="{{height}}"></iframe>',
+            showPermalinkCheckbox: false
+        });
+
+        shareDialog.appendTo(shareDialogContainer);
+
         $('#btn-save').popover({
-            content: '<div id="popover-save"></div>',
+            content: shareDialogContainer[0],
             container: 'body',
             placement: 'bottom',
             html: true
         });
 
         $('#btn-save').on('shown.bs.popover', function() {
-            var origin = window.location.search ?
-                window.location.href.slice(0, window.location.href.indexOf(window.location.search)) :
-                window.location.href;
-
-            $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
-                permalink: false
-            }));
-
             if (appConfigModel.getValue()) {
                 viewer.getCm().then(function(vcm) {
                     var cfg = _.extend({}, appConfigModel.getValue(), stateConfigModel.getValue());
                     mapsResourceServer.sendPostRequest('TinyReference/Create.ashx', {
                         content: JSON.stringify(cfg)
                     }).then(function(response) {
-                        var permalink = window.location.protocol + '//' + window.location.host + winnieConfig.viewerUrl + '?config=' + response.Result;
-                        $('#popover-save').html(Handlebars.compile(nsGmx.Templates.Editor.saveDialog)({
-                            permalink: permalink
-                        }));
+                        shareDialog.model.set('permalinkId', response.Result);
                     }).fail(function() {
-                        $('#popover-save').html('unknown error');
+                        shareDialog.model.set('error', 'unknown error');
                     });
                 });
             } else {
-                $('#popover-save').html('invalid json');
+                shareDialog.model.set('error', 'invalid json');
             }
         });
 

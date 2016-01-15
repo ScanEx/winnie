@@ -50,4 +50,5 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-saveDialog-openIconCell { font-size: 14px; padding-left: 6px; }
 .editor-saveDialog-openIconCell a { color: #3a3a3a; text-decoration: none; }
 .editor-saveDialog-openIconCell a:hover { color: #000000; }
-#popover-save { width: 250px; }
+
+.shareDialogContainer { width: 250px; }

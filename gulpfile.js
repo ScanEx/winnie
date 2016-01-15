@@ -260,6 +260,20 @@ var stateManager = {
     build: false
 };
 
+var alertWidget = {
+    id: 'AlertWidget',
+    srcDir: './external/GMXCommonComponents/AlertWidget',
+    distDir: './build',
+    build: true
+};
+
+var shareIconControl = {
+    id: 'ShareIconControl',
+    srcDir: './external/GMXCommonComponents/ShareIconControl',
+    distDir: 'build',
+    build: true
+};
+
 var coreComponents = [
     jquery,
     jqueryui,
@@ -318,6 +332,8 @@ require('./external/GMXBuilder')(gulp, {
     components: coreComponents.concat([
         aceEditor,
         dropdownMenuWidget,
+        alertWidget,
+        shareIconControl,
         authManager, {
             id: 'editor',
             srcDir: './editor',
