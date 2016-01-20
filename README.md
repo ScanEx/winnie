@@ -22,9 +22,13 @@ Easy way to embed [GeoMixer](http://geomixer.ru/index.php/en) based maps into yo
   - Balloon image gallery
   - Calendar
 
+### Config reference
+
+https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md
+
 ### Examples
 
-Some example of what kind of applications can be created using "Winnie":
+Some examples of what kind of applications can be created using "Winnie":
 check the ["gallery"](http://winnie.kosmosnimki.ru/gallery.html)
 
 ### License
@@ -63,6 +67,14 @@ You can also download the library and customize the source code if you like <!--
   - Закладки на карте
   - Фотогаллерея в балунах
   - Строка поиска*
+
+### Справочник конфиг-файла
+
+https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md
+
+### Примеры
+
+["Галерея"](http://winnie.kosmosnimki.ru/gallery.html)
 
 ### Лицензия
 
