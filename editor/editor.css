@@ -38,7 +38,7 @@ body .ui-widget { font-family: 'Roboto'; }
 .sidebarPanel-toolbarContainer { z-index: 40; }
 .sidebarPanel-codeEditorContainer { z-index: 30; }
 .editor-sidebarContainer { z-index: 20; }
-.editor-viewerContainer { z-index: 10; }
+.editor-viewerContainer { z-index: 5; }
 
 .editor-dialog { padding: 6px 8px; }
 .popover .editor-dialog { padding: 0; }
