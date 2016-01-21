@@ -215,10 +215,9 @@ var sidebar = {
 };
 
 var storytellingWidget = {
-    id: 'StorytellingWidget',
-    srcDir: './external/GMXCommonComponents/StorytellingWidget',
-    distDir: './build',
-    build: true
+    id: 'StorytellingControl',
+    srcDir: './external/GMXCommonComponents/StorytellingControl',
+    build: false
 };
 
 var layersTreeWidget = {
