@@ -31,8 +31,9 @@ body .ui-widget { font-family: 'Roboto'; }
 .toolbar-item { display: inline-block; }
 
 .editor-wizardContainer { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
-
 .editor-wizardContainer { z-index: 2000; }
+.editor-wizardContainer_loading { background-color: #fff; }
+
 .editor-collapseButton { z-index: 50; }
 .sidebarPanel-toolbarContainer { z-index: 40; }
 .sidebarPanel-codeEditorContainer { z-index: 30; }
@@ -50,4 +51,5 @@ body .ui-widget { font-family: 'Roboto'; }
 .editor-saveDialog-openIconCell { font-size: 14px; padding-left: 6px; }
 .editor-saveDialog-openIconCell a { color: #3a3a3a; text-decoration: none; }
 .editor-saveDialog-openIconCell a:hover { color: #000000; }
-#popover-save { width: 250px; }
+
+.shareDialogContainer { width: 250px; }

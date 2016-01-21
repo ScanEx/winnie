@@ -79,6 +79,10 @@
         var winnieConfig = cm.get('winnieConfig');
         var urlManager = cm.get('urlManager');
 
+        if (window !== window.top) {
+            return null;
+        }
+
         var editButtonContainerEl = layoutManager.getEditButtonContainer();
         var editButtonEl = L.DomUtil.create('a', 'editButton', editButtonContainerEl);
         editButtonEl.innerHTML = L.gmxLocale.getLanguage() === 'rus' ? 'редактировать' : 'edit';
