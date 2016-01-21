@@ -210,8 +210,8 @@ var animationHelpers = {
 };
 
 var sidebar = {
-    id: 'IconSidebarWidget',
-    srcDir: './external/GMXCommonComponents/IconSidebarWidget'
+    id: 'IconSidebarControl',
+    srcDir: './external/GMXCommonComponents/IconSidebarControl'
 };
 
 var storytellingWidget = {
