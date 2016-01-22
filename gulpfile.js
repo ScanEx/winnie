@@ -323,6 +323,16 @@ var virtualLayers = [{
         './src/GIBSMetadata.js'
     ],
     build: false
+}, {
+    id: 'GMXPluginGFW',
+    srcDir: './external/GMXPluginGFW',
+    distFiles: [
+        './src/L.GFWLayer.js',
+        './src/L.GFWSlider.js',
+        './src/L.GFWSlider.css',
+        './src/GmxGFWLayer.js'
+    ],
+    build: false
 }];
 
 require('./external/GMXBuilder')(gulp, {

@@ -25,3 +25,6 @@
 [submodule "external/leaflet-GIBS"]
 	path = external/leaflet-GIBS
 	url = git@github.com:aparshin/leaflet-GIBS.git
+[submodule "external/GMXPluginGFW"]
+	path = external/GMXPluginGFW
+	url = git@github.com:ScanEx/GMXPluginGFW.git
