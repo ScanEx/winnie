@@ -311,6 +311,10 @@ var coreComponents = [
 ];
 
 var virtualLayers = [{
+    id: 'GmxVirtualTileLayer',
+    srcDir: './external/GMXCommonComponents/GmxVirtualTileLayer',
+    build: false
+}, {
     id: 'leaflet-GIBS',
     srcDir: './external/leaflet-GIBS',
     distFiles: [
