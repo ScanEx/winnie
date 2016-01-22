@@ -28,3 +28,9 @@
 [submodule "external/GMXPluginGFW"]
 	path = external/GMXPluginGFW
 	url = git@github.com:ScanEx/GMXPluginGFW.git
+[submodule "external/GMXPluginCadatsre"]
+	path = external/GMXPluginCadatsre
+	url = git@github.com:ScanEx/GMXPluginCadatsre.git
+[submodule "external/L.ImageOverlay.Pane"]
+	path = external/L.ImageOverlay.Pane
+	url = git@github.com:ScanEx/L.ImageOverlay.Pane.git

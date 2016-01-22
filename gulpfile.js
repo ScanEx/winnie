@@ -333,6 +333,21 @@ var virtualLayers = [{
         './src/GmxGFWLayer.js'
     ],
     build: false
+}, {
+    id: 'L.ImageOverlay.Pane',
+    srcDir: './external/L.ImageOverlay.Pane',
+    distDir: './src',
+    build: false
+}, {
+    id: 'GMXPluginCadatsre',
+    srcDir: './external/GMXPluginCadatsre',
+    distFiles: [
+        './GmxCadastreLayer.js',
+        './L.Cadastre/src/L.Cadastre.js',
+        './L.Cadastre/src/L.Cadastre.css',
+        './L.Cadastre/src/L.Cadastre.Info.js'
+    ],
+    build: false
 }];
 
 require('./external/GMXBuilder')(gulp, {
