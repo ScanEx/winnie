@@ -310,6 +310,17 @@ var coreComponents = [
     winnieCore
 ];
 
+var virtualLayers = [{
+    id: 'leaflet-GIBS',
+    srcDir: './external/leaflet-GIBS',
+    distFiles: [
+        './src/GeoMixerGIBSLayer.js',
+        './src/GIBSLayer.js',
+        './src/GIBSMetadata.js'
+    ],
+    build: false
+}];
+
 require('./external/GMXBuilder')(gulp, {
     tempDir: './temp',
     distDir: './dist',
@@ -321,14 +332,14 @@ require('./external/GMXBuilder')(gulp, {
 }, {
     id: 'viewer',
     htmlfile: 'html/viewer.html',
-    components: coreComponents.concat([{
+    components: [].concat(coreComponents, virtualLayers, [{
         id: 'viewer',
         srcDir: './viewer'
     }])
 }, {
     id: 'index',
     htmlfile: 'html/index.html',
-    components: coreComponents.concat([
+    components: [].concat(coreComponents, virtualLayers, [
         aceEditor,
         dropdownMenuWidget,
         alertWidget,

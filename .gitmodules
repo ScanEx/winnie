@@ -22,3 +22,6 @@
 [submodule "external/leaflet.markercluster"]
 	path = external/leaflet.markercluster
 	url = git@github.com:leaflet/leaflet.markercluster.git
+[submodule "external/leaflet-GIBS"]
+	path = external/leaflet-GIBS
+	url = git@github.com:aparshin/leaflet-GIBS.git
