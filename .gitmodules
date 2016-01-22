@@ -22,3 +22,15 @@
 [submodule "external/leaflet.markercluster"]
 	path = external/leaflet.markercluster
 	url = git@github.com:leaflet/leaflet.markercluster.git
+[submodule "external/leaflet-GIBS"]
+	path = external/leaflet-GIBS
+	url = git@github.com:aparshin/leaflet-GIBS.git
+[submodule "external/GMXPluginGFW"]
+	path = external/GMXPluginGFW
+	url = git@github.com:ScanEx/GMXPluginGFW.git
+[submodule "external/GMXPluginCadatsre"]
+	path = external/GMXPluginCadatsre
+	url = git@github.com:ScanEx/GMXPluginCadatsre.git
+[submodule "external/L.ImageOverlay.Pane"]
+	path = external/L.ImageOverlay.Pane
+	url = git@github.com:ScanEx/L.ImageOverlay.Pane.git

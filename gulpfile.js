@@ -310,6 +310,46 @@ var coreComponents = [
     winnieCore
 ];
 
+var virtualLayers = [{
+    id: 'GmxVirtualTileLayer',
+    srcDir: './external/GMXCommonComponents/GmxVirtualTileLayer',
+    build: false
+}, {
+    id: 'leaflet-GIBS',
+    srcDir: './external/leaflet-GIBS',
+    distFiles: [
+        './src/GeoMixerGIBSLayer.js',
+        './src/GIBSLayer.js',
+        './src/GIBSMetadata.js'
+    ],
+    build: false
+}, {
+    id: 'GMXPluginGFW',
+    srcDir: './external/GMXPluginGFW',
+    distFiles: [
+        './src/L.GFWLayer.js',
+        './src/L.GFWSlider.js',
+        './src/L.GFWSlider.css',
+        './src/GmxGFWLayer.js'
+    ],
+    build: false
+}, {
+    id: 'L.ImageOverlay.Pane',
+    srcDir: './external/L.ImageOverlay.Pane',
+    distDir: './src',
+    build: false
+}, {
+    id: 'GMXPluginCadatsre',
+    srcDir: './external/GMXPluginCadatsre',
+    distFiles: [
+        './GmxCadastreLayer.js',
+        './L.Cadastre/src/L.Cadastre.js',
+        './L.Cadastre/src/L.Cadastre.css',
+        './L.Cadastre/src/L.Cadastre.Info.js'
+    ],
+    build: false
+}];
+
 require('./external/GMXBuilder')(gulp, {
     tempDir: './temp',
     distDir: './dist',
@@ -321,14 +361,14 @@ require('./external/GMXBuilder')(gulp, {
 }, {
     id: 'viewer',
     htmlfile: 'html/viewer.html',
-    components: coreComponents.concat([{
+    components: [].concat(coreComponents, virtualLayers, [{
         id: 'viewer',
         srcDir: './viewer'
     }])
 }, {
     id: 'index',
     htmlfile: 'html/index.html',
-    components: coreComponents.concat([
+    components: [].concat(coreComponents, virtualLayers, [
         aceEditor,
         dropdownMenuWidget,
         alertWidget,
