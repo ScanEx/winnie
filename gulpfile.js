@@ -214,9 +214,15 @@ var sidebar = {
     srcDir: './external/GMXCommonComponents/IconSidebarControl'
 };
 
-var storytellingWidget = {
+var storytellingControl = {
     id: 'StorytellingControl',
     srcDir: './external/GMXCommonComponents/StorytellingControl',
+    build: false
+};
+
+var storytellingAccordeonControl =  {
+    id: 'storytellingAccordeonControl',
+    srcDir: './external/GMXCommonComponents/StorytellingAccordeonControl',
     build: false
 };
 
@@ -305,7 +311,8 @@ var coreComponents = [
     dateInterval,
     calendarWidget,
     bookmarksWidget,
-    storytellingWidget,
+    storytellingControl,
+    storytellingAccordeonControl,
     stateManager,
     winnieCore
 ];
