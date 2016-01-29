@@ -20,6 +20,37 @@
         setValue: function(val) {
             this.set('value', $.extend(true, val, this.extension));
         },
+        setValueSafe: function(value, protectedVariables) {
+            var oldValue = this.getValue();
+            var vars = {};
+
+            protectedVariables.map(function(variable) {
+                vars[variable] = getVariable(variable, oldValue);
+            });
+
+            this.setValue(value);
+
+            var newValue = this.getValue();
+            protectedVariables.map(function(variable) {
+                setVariable(vars[variable], variable, newValue)
+            });
+
+            this.trigger('change');
+
+            function getVariable(n, o) {
+                return n.split('.').reduce(function(p, c) {
+                    return p[c];
+                }, o);
+            }
+
+            function setVariable(v, n, o) {
+                var a = n.split('.');
+                while (a.length > 1) {
+                    o = o[a.shift()];
+                }
+                o[a[0]] = v;
+            }
+        },
         getValue: function() {
             return this.get('value');
         },
@@ -251,7 +282,8 @@
                 }.bind(this)).promise();
             },
             _bindUpdatingEvents: function() {
-                this._vcm.get('baseLayersManager').on('baselayeractiveids baselayerchange', this._updateStateConfigModel.bind(this));
+                this._vcm.get('baseLayersManager').on('baselayeractiveids baselayerchange', this._updateStateConfigModel.bind(
+                    this));
                 this._vcm.get('layersTree').on('childChange', this._updateStateConfigModel.bind(this));
                 this._vcm.get('map').on('dragend zoomend', this._updateStateConfigModel.bind(this));
             },
@@ -420,11 +452,12 @@
         return $btn;
     });
 
-    cm.define('configWizard', ['layoutManager', 'appConfigModel', 'permalinkConfig', 'viewer'], function(cm, cb) {
-        var appConfigModel = cm.get('appConfigModel');
+    cm.define('configWizard', ['permalinkConfig', 'appConfigModel', 'layoutManager', 'winnieConfig', 'viewer'], function(cm, cb) {
         var permalinkConfig = cm.get('permalinkConfig');
+        var appConfigModel = cm.get('appConfigModel');
         var layoutManager = cm.get('layoutManager');
-        var viewer = cm.get('viewer')
+        var winnieConfig = cm.get('winnieConfig');
+        var viewer = cm.get('viewer');
 
         if (!_.isEmpty(permalinkConfig)) {
             layoutManager.getWizardContainer().hide();
@@ -439,7 +472,11 @@
             configWizard.appendTo(layoutManager.getWizardContainer());
 
             configWizard.on('configchange', function(cfg) {
-                appConfigModel.setValue(cfg);
+                if (winnieConfig.wizard && winnieConfig.wizard.protectVariables) {
+                    appConfigModel.setValueSafe(cfg, winnieConfig.wizard.protectVariables);
+                } else {
+                    appConfigModel.setValue(cfg);
+                }
                 layoutManager.getWizardContainer().hide();
             });
             cb(configWizard);

@@ -1,6 +1,12 @@
 {
     "editorUrl": "/",
     "viewerUrl": "/viewer.html",
+    "wizard": {
+        "protectVariables": [
+            "app.gmxMap.mapID",
+            "layers"
+        ]
+    },
     "appMirrors": {
         "localhost": {
             "app": {
