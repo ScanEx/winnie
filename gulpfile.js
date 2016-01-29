@@ -214,6 +214,13 @@ var sidebar = {
     srcDir: './external/GMXCommonComponents/IconSidebarControl'
 };
 
+var scrollView = {
+    id: 'ScrollView',
+    srcDir: 'external/GMXCommonComponents/ScrollView',
+    distDir: 'build',
+    build: true
+};
+
 var storytellingControl = {
     id: 'StorytellingControl',
     srcDir: './external/GMXCommonComponents/StorytellingControl',
@@ -307,6 +314,7 @@ var coreComponents = [
     animationHelpers,
     switchingCollectionWidget,
     sidebar,
+    scrollView,
     layersTreeWidget,
     dateInterval,
     calendarWidget,
