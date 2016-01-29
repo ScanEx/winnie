@@ -320,28 +320,41 @@
     });
 
     cm.define('codeEditor', ['appConfigModel', 'sidebarPanel', 'layoutManager', 'viewer'], function(cm) {
-        var viewer = cm.get('viewer');
-        var appConfigModel = cm.get('appConfigModel');
-        var layoutManager = cm.get('layoutManager');
-        var $container = cm.get('sidebarPanel').getCodeEditorContainer();
-        var $aceContainer = $('<div>')
-            .css('position', 'relative')
-            .css('width', '100%')
-            .css('height', '100%')
-            .appendTo($container);
-        var codeEditor = ace.edit($aceContainer.get(0));
-        codeEditor.setTheme("ace/theme/chrome");
-        codeEditor.getSession().setMode("ace/mode/json");
-        codeEditor.setValue(JSON.stringify(appConfigModel.getVisibleValue(), null, '    '));
-        codeEditor.selection.clearSelection();
-        layoutManager.on('sidebarchange', function(expanded) {
-            codeEditor.resize();
+        return new(L.Class.extend({
+            initialize: function(options) {
+                L.setOptions(this, options);
+                var $aceContainer = $('<div>')
+                    .css('position', 'relative')
+                    .css('width', '100%')
+                    .css('height', '100%')
+                    .appendTo(this.options.container);
+                var aceEditor = this._codeEditor = ace.edit($aceContainer.get(0));
+                aceEditor.setTheme("ace/theme/chrome");
+                aceEditor.getSession().setMode("ace/mode/json");
+                aceEditor.setValue(JSON.stringify(this.options.appConfigModel.getVisibleValue(), null, '    '));
+                aceEditor.selection.clearSelection();
+
+                this.options.layoutManager.on('sidebarchange', function(expanded) {
+                    aceEditor.resize();
+                });
+                this.options.appConfigModel.on('change', function() {
+                    aceEditor.setValue(JSON.stringify(this.options.appConfigModel.getVisibleValue(), null, '    '));
+                    aceEditor.selection.clearSelection();
+                }.bind(this));
+            },
+            updateModel: function () {
+                if (jsonIsValid(this._codeEditor.getValue())) {
+                    this.options.appConfigModel.setValue(JSON.parse(this._codeEditor.getValue()));
+                } else {
+                    console.log('invalid json');
+                }
+            }
+        }))({
+            viewer: cm.get('viewer'),
+            appConfigModel: cm.get('appConfigModel'),
+            layoutManager: cm.get('layoutManager'),
+            container: cm.get('sidebarPanel').getCodeEditorContainer(),
         });
-        appConfigModel.on('change', function() {
-            codeEditor.setValue(JSON.stringify(appConfigModel.getVisibleValue(), null, '    '));
-            codeEditor.selection.clearSelection();
-        });
-        return codeEditor;
     });
 
     cm.define('toolbar', ['sidebarPanel'], function(cm) {
@@ -418,11 +431,7 @@
         var appConfigModel = cm.get('appConfigModel');
         var codeEditor = cm.get('codeEditor');
         $('#btn-refresh').click(function(je) {
-            if (jsonIsValid(codeEditor.getValue())) {
-                appConfigModel.setValue(JSON.parse(codeEditor.getValue()));
-            } else {
-                console.log('invalid json');
-            }
+            codeEditor.updateModel();
         });
         return $('#btn-refresh');
     });
