@@ -34,3 +34,6 @@
 [submodule "external/L.ImageOverlay.Pane"]
 	path = external/L.ImageOverlay.Pane
 	url = git@github.com:ScanEx/L.ImageOverlay.Pane.git
+[submodule "external/gmxDrawing"]
+	path = external/gmxDrawing
+	url = git@github.com:scanex/gmxDrawing.git

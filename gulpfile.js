@@ -97,6 +97,13 @@ var gmxBaseLayersManager = {
     watch: false
 };
 
+var gmxDrawing = {
+    id: 'gmxDrawing',
+    srcDir: './external/gmxDrawing',
+    distDir: './dist',
+    build: true
+};
+
 var gmxControls = {
     id: 'gmxControls',
     srcDir: './external/gmxControls',
@@ -300,6 +307,7 @@ var coreComponents = [
     leafletGeomixer,
     tileLayerMercator,
     gmxBaseLayersManager,
+    gmxDrawing,
     gmxControls,
     layersTree,
     layersDebugger,
