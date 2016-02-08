@@ -212,20 +212,8 @@
 
         return new AppConfigModel(
             _.isEmpty(permalinkConfig) ? defaultConfig : permalinkConfig,
-            getMirrorExtension(winnieConfig.appMirrors)
+            nsGmx.Utils.getMirrorExtension(winnieConfig.appMirrors)
         );
-
-        function getMirrorExtension(mirrors) {
-            for (var mirror in mirrors) {
-                if (
-                    mirrors.hasOwnProperty(mirror) &&
-                    window.location.host.indexOf(mirror) !== -1
-                ) {
-                    return mirrors[mirror];
-                }
-            }
-            return {};
-        }
     });
 
     cm.define('stateConfigModel', ['permalinkConfig', 'defaultConfig'], function() {

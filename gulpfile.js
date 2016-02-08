@@ -377,6 +377,10 @@ require('./external/GMXBuilder')(gulp, {
     id: 'viewer',
     htmlfile: 'html/viewer.html',
     components: [].concat(coreComponents, virtualLayers, [{
+        id: 'appUtils',
+        srcDir: './app/utils',
+        build: false
+    }, {
         id: 'viewer',
         srcDir: './app/viewer'
     }])
@@ -389,6 +393,10 @@ require('./external/GMXBuilder')(gulp, {
         alertWidget,
         shareIconControl,
         authManager, {
+            id: 'appUtils',
+            srcDir: './app/utils',
+            build: false
+        }, {
             id: 'editor',
             srcDir: './app/editor',
             distDir: './build',
