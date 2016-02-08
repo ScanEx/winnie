@@ -64,10 +64,14 @@
         }
     });
 
-    cm.define('mapApplicationConstructor', ['layoutManager', 'permalinkConfig'], function(cm, cb) {
-        var config = cm.get('permalinkConfig');
+    cm.define('mapApplicationConstructor', ['permalinkConfig', 'layoutManager', 'winnieConfig'], function(cm, cb) {
+        var permalinkConfig = cm.get('permalinkConfig');
         var layoutManager = cm.get('layoutManager');
-        var macm = nsGmx.createGmxApplication(layoutManager.getMapContainer(), config)
+        var winnieConfig = cm.get('winnieConfig');
+        var macm = nsGmx.createGmxApplication(layoutManager.getMapContainer(), $.extend(true,
+            permalinkConfig,
+            nsGmx.Utils.getMirrorExtension(winnieConfig.appMirrors)
+        ));
         macm.create().then(function() {
             cb(macm);
         });
