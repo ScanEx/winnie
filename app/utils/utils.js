@@ -11,4 +11,4 @@ nsGmx.Utils.getMirrorExtension = function(mirrors) {
         }
     }
     return {};
-}
+};
