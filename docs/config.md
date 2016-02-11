@@ -21,160 +21,222 @@
 
 Конфигурационный файл описывается в формате json. Это значит, что каждый ключ должен быть заключён в двойные кавычки, а в качестве значения может быть строка в двойных кавычках, число, булево значение (`true`/`false`) или объект `{ ... }`. Пары `ключ: значение` разделяются запятыми. Лишних запятых быть не должно. Комментарии не допускаются.
 
-## Секция app
+Секция `app` имеет линейную структуру. Это означает, что каждый её ключ соответствует описываемому объекту и содержит хеш с настройками, касающимися только этого компонента.
 
-Представляет из себя объект, каждый ключ которого соответствует *начальным настройкам* какого-либо компонента приложения.
+*Примечание: почти всегда хеш с настройками передаётся конструктору соответствующего класса, однако может дополняться параметрами, не входящими в оригинальную документацию. Ниже будут приведены ссылки на описание классов, объектов или функций, которым передаются эти хеши.*
 
-В качестве значения выступает объект с параметрами, передаваемый в конструктор соответствующего компоненту класса. Некоторые часто используемые параметры перечислены в таблице ниже. Полный список следует искать в документации соответствующего класса.
+Секция `state` в конструкторе приложений скрыта от пользователя и заполняется автоматически.
 
-Если в качестве значения передать `false`, то компонент не будет инициализирован.
+## Настройки карты
 
-Если компонент должен быть проинициализирован, но не принимает ни одного параметра - передаётся пустой объект `{}`.
+За основные настройки карты отвечают два ключа, расположенные в секции `app`: `map` и `gmxMap`.
 
-На текущий момент в конструкторе приложений доступны для конфигурирования следующие компоненты:
-
-ключ | описание | параметры | класс
---- | --- | --- | ---
-map | Leaflet-карта | `<Number>minZoom` `<Number>maxZoom` | [L.Map](http://leafletjs.com/reference.html#map-options)
-gmxMap | данные карты | `<String>mapID` `<String>apiKey` | [L.gmx.loadMap](https://github.com/ScanEx/Leaflet-GeoMixer/blob/master/documentation-rus.md#lgmxloadmap)
-hideControl | контрол скрытия | --- | [L.Control.gmxHide](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#%D0%9F%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-lcontrolgmxhide)
-zoomControl | контрол зума | --- | [L.Control.gmxZoom](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#%D0%9F%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-lcontrolgmxzoom)
-centerControl | крестик по центру карты | `<String>color` | [L.Control.gmxCenter](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#%D0%9F%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-lcontrolgmxzoom)
-bottomControl | фон и контейнер контролов, расположенных снизу | `<Boolean>notHide` | [L.Control.gmxBottom](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#%D0%9F%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-lcontrolgmxbottom)
-locationControl | контрол координат | `<String>position` `<String>scaleFormat` `<Boolean>notHide` | [L.Control.gmxLocation](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#%D0%9F%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-lcontrolgmxlocation)
-copyrightControl | контрол копирайтов | `<String>position` `<String>type` `<String>mapCopyright` | [L.Control.gmxCopyright](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#%D0%9F%D0%BB%D0%B0%D0%B3%D0%B8%D0%BD-lcontrolgmxcopyright)
-baseLayersControl | контрол подложек | `<String>maxLayersInRow` | [GmxIconLayers](https://github.com/ScanEx/GMXCommonComponents/tree/master/GmxIconLayers)
-layersMapper | менеджер отображения слоёв (отключить, если нужно управлять отображением слоёв вручную) | --- | ---
-layersTreeWidget | виджет дерева слоёв | `<Number>maxDepth` `<Boolean>showCenterIcon` | [LayersTreeWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/LayersTreeWidget)
-storytellingWidget | виджет сторителлинга | --- | [StorytellingWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/StorytellingWidget)
-sidebarWidget | сайдбар. Включается автоматически, если включен виджет закладок или дерева слоёв | `<Boolean>useAnimation` | [IconSidebarWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/IconSidebarWidget)
-calendarWidget | календарь |  | [CalendarWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/CalendarWidget)
-
-## Секция state
-
-Представляет из себя объект, каждый ключ которого соответствует *состоянию* какого-либо компонента приложения.
-
-По своей сути `state` - это просто секция `components` из пермалинка fires (версия 3.0.0)
-
-Ключи объекта обозначают компонент, а их значения содержат данные для восстановления его состояния.
-
-Как правило, объект `state` формируется автоматически.
-Ниже приведен список типичных параметров для каждого компонента, которые могут настраиваться пользователем
-
-#### map
+**Пример:**
 ```json
 {
-    "position": {
-        "x": 50,
-        "y": 30,
-        "z": 3
-    }
-}
-```
+    "app": {
+        "map": {
+            "minZoom": 3
+        },
+        "gmxMap": {
+            "mapID": "37TYY",
 
-#### language
-
-`eng` или `rus`
-
-Подробная документация в [PermalinkManager](https://github.com/ScanEx/GMXCommonComponents/tree/master/PermalinkManager)
-
-## Секция layers
-
-Представляет из себя объект, каждый ключ которого соответствует идентификатору слоя или группы.
-
-Доступны следующие настройки:
-
-#### clusters
-
-Отображает слой в виде кластеров путём применения Leaflet-плагина [L.MarkerCluster](https://github.com/Leaflet/Leaflet.markercluster)
-
-Включает все настройки плагина, а также функции [bindClusters()](https://github.com/ScanEx/Leaflet-GeoMixer/blob/master/documentation-rus.md#clusters-options---%D0%BE%D0%BF%D1%86%D0%B8%D0%B8-%D0%BA%D0%BB%D0%B0%D1%81%D1%82%D0%B5%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8) GeoMixer-а, плюс следующие параметры:
-- `<Boolean>autoSpiderfy (true)` - если включён, то маркеры, расположенные в одной точке будут разворачиваться автоматически без зумирования.
-
-#### title
-
-Объект с двумя необязательными ключами: `eng` и `rus`. Переопределяет заголовок слоя с учётом текущего языка.
-
-#### description
-
-Объект с двумя необязательными ключами: `eng` и `rus`. Переопределяет описание слоя с учётом текущего языка.
-
-#### heatmap
-
-Отображает слой в виде хитмэпа путём применения Leaflet-плагина [Leaflet.Heat](https://github.com/Leaflet/Leaflet.heat)
-
-Включает все настройки плагина, а также функции [bindHeatmap()](https://github.com/ScanEx/Leaflet-GeoMixer/blob/master/documentation-rus.md#heatmap-options---%D0%BE%D0%BF%D1%86%D0%B8%D0%B8-heatmap) GeoMixer-а, т.е
-
-- `<Number|Function>maxHeatMapZoom` - Максимальный zoom на котором включен HeatMap слоя. (На всех zoom > maxZoom слой будет ображаться без HeatMap).
-- `<Number>intensityField` - Наименование атрибута значение которого используется для расчета интенсивности точки.
-- `<String>intensityScale` - Множитель используемый при расчете интенсивности точки.
-- `<Number>minOpacity` - минимальный предел прозрачности
-- `<Number>maxZoom` - zoom, при котором точки достигают максимальной интенсивности (по умолчанию - maxZoom карты)
-- `<Number>max` - максимальная интенсивность точки, по умолчанию 1.0
-- `<Number>radius` - радиус точек хитмапа, по умолчанию 25
-- `<Number>blur` - коэффициент размытия, по умолчанию 15
-- `<Object>gradient` - настройки градиента, например {0.4: "blue", 0.65: "lime", 1: "red"}
-
-### Пример секции `layers`:
-
-```json
-{
-    "<GroupID>": {
-        "title": {
-            "eng": "Group1"
-        }
-    },
-    "GroupID": {
-        "title": {
-            "eng": "Group2"
-        }
-    },
-    "<LayerID>": {
-        "clusters": {
-            "zoomToBoundsOnClick": false,
-            "autoSpiderfy": true,
-            "maxZoom": 30
         }
     }
 }
 ```
 
-## Значения по умолчанию
+### Ключ map (видимая карта)
 
-Для всех компонентов конструктора заданы значения по умолчанию, так что для нормальной работы приложения достаточно указать только id карты и api-ключ в компоненте `gmxMap`. Ниже приведён конфигурционный файл, из которого берутся значения, не указанные в редакторе.
+[L.Map](http://leafletjs.com/reference.html#map-options)
 
-Если его использовать "как есть", то получим пустую карту с включёнными контролами и виджетом подложек.
+- `<Number> minZoom` - минимальный допустимый зум карты
+- `<Number> maxZoom` - максимальный допустимый зум карты
+
+### Ключ gmxMap (загружаемые данные)
+
+[L.gmx.loadMap](https://github.com/ScanEx/Leaflet-GeoMixer/blob/master/documentation-rus.md#lgmxloadmap)
+
+- `<String> mapID` - ID загружаемой карты
+- `<String> apiKey` - API-ключ клиента. (в конструкторе приложений этот параметр скрыт)
+
+## Настройки контролов
+
+Контролы - это элементы пользовательского интерфейса, помещаемые непосредственно на карту. Настройки всех контролов располагаются в секции `app`. Ключ обозначает контрол, который мы настраеваем, а в качестве значения может передаваться как хеш с настройками, так и булево значение (в этом случае `true` эквивалентно `{}`, а `false` эквивалентно `undefined`, что означает, что контрол не будет добавлен на карту).
+
+*Примечание: так же, как и для настроек карты, для каждого контрола указана ссылка на документацию*
+
+**Пример:**
 
 ```json
 {
     "app": {
-        "gmxMap": {
-            "setZIndex": true
-        },
-        "hideControl": {},
-        "zoomControl": {},
+        "zoomControl": false,
         "centerControl": {
-            "color": "black"
+            "color": "#ef33b9"
         },
-        "bottomControl": {},
-        "locationControl": {},
-        "copyrightControl": {},
-        "baseLayersControl": {},
-        "layersMapper": {},
-        "layersTreeWidget": false,
-        "bookmarksWidget": false,
-        "storytellingWidget": false,
-        "sidebarWidget": false,
-    },
-    "state": {
-        "map": {
-            "position": {
-                "x": 82,
-                "y": 53,
-                "z": 3
-            }
-        },
-        "language": "rus"
+        "baseLayersControl": true
     }
 }
 ```
+
+### Кнопка скрытия (ключ hideControl)
+
+[L.Control.GmxHide](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#Плагин-lcontrolgmxhide)
+
+*Параметры отсутствуют*
+
+### Кнопки зума (ключ zoomControl)
+
+[L.Control.GmxHide](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#Плагин-lcontrolgmxhide)
+
+Параметры отсутствуют, однако в качестве значения можно указать строку `'leaflet'`. В этом случае вместо контрола Геомиксера будет использован стандартный контрол Leaflet.
+
+### Крестик по центру карты (ключ centerControl)
+
+[L.Control.GmxCenter](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#Плагин-lcontrolgmxcenter)
+
+- `<String> color` - цвет в hex (например `'#fedcba'`)
+
+### Контрол копирайтов (ключ copyrightControl)
+
+[L.Control.GmxCopyright](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#Плагин-lcontrolgmxcopyright)
+
+- `<String> position` - положение контрола (см. [Leaflet control positions](http://leafletjs.com/reference.html#control-'topleft'))
+- `<String> type` - тип отображения (`line` - в одной строке, `window` - в виде всплывающего списка)
+- `<String> mapCopyright` - копирайт карты
+
+### Контрол координат и масштаба (ключ locationControl)
+
+[L.Control.GmxLocation](https://github.com/ScanEx/gmxControls/blob/master/documentation-rus.md#Плагин-lcontrolgmxlocation)
+
+- `<String> position` - положение контрола (см. [Leaflet control positions](http://leafletjs.com/reference.html#control-'topleft'))
+- `<String> scaleFormat` - формат отображения масштаба. Возможны значения `bar` и `text`
+- `<String> notHide` - не скрывать контрол при переключении видимости контролов
+
+### Контрол подложек (ключ baseLayersControl)
+
+[L.Control.IconLayers](https://github.com/ScanEx/Leaflet-IconLayers)
+
+- `<Number> maxLayersInRow` - максимальное количество подложек, после которого будет образован следующий ряд
+
+### Календарик (ключ calendarWidget)
+
+[nsGmx.CalendarWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/CalendarWidget)
+
+- `<String> type` - тип календарика (`fire`(режим 24+n) или `common`)
+- `<Boolean> minimized` - свёрнут ли календарик по умолчанию
+- `<Boolean> showSwitcher` - показывать ли кнопку переключения режима
+
+### Сайдбар (ключ sidebarWidget)
+
+[nsGmx.IconSidebarControl](https://github.com/ScanEx/GMXCommonComponents/tree/master/IconSidebarControl)
+
+- `<Boolean> useAnimation` - использовать ли анимацию
+
+Сайдбар включается автоматически, если указан какой-либо виджет, который в него встраивается.
+
+### Контрол сторителлинга (ключ storytellingWidget)
+
+[nsGmx.StorytellingControl](https://github.com/ScanEx/GMXCommonComponents/tree/master/StorytellingControl)
+
+- `<String> type` - тип виджета (`accordeon` или `flipper`)
+- `<String> position` - если тип - `accordeon`, то этот параметр влияет на положение виджета (см. [Leaflet control positions](http://leafletjs.com/reference.html#control-'topleft'))
+
+## Настройки виджетов сайдбара
+
+Ниже приведен список виджетов, которые автоматически встраиваются в сайдбар. Они описываются также в секции `app` и для них справедливы те же примечания, что и для контролов.
+
+### Дерево слоёв (ключ layersTreeWidget)
+
+[nsGmx.LayersTreeWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/LayersTreeWidget)
+
+Конфиг дерева слоёв - двухуровневый и имеет следующий вид (указаны значения по умолчанию):
+
+```json
+{
+    "maxDepth": 0,
+    "showCenterIcon": false,
+    "popoversContent": "description",
+    "popoversOptions": {
+        "trigger": "hover"
+    }
+}
+```
+
+- `<Number> maxDepth` - максимальная глубина отображения дерева
+- `<Boolean> showCenterIcon` - показывать ли иконку перецентровки
+- `<String> popoversContent` -  что будет отображаться во всплывающей подсказке кнопки `i`
+- `<String> popoversOptions.trigger` - действие, приводящее к появлению подсказки (`click` или  `hover`)
+
+### Виджет закладок (ключ bookmarksWidget)
+
+[nsGmx.BookmarksWidget](https://github.com/ScanEx/GMXCommonComponents/tree/master/BookmarksWidget)
+
+*Параметры отсутствуют*
+
+
+## Настройки слоёв карты
+
+Слои настраиваются в секции `layers`. Каждый ключ соответствует идентификатору слоя или группы. Его значением, в свою очередь, является объект, описывающий настройки данного слоя или группы.
+
+**Пример секции `layers`:**
+```json
+{
+    "Sx8AdnMZ3yFg0LVi": {
+        "title": {
+            "eng": "Objects and boundaries"
+        }
+    },
+    "0EF727A0FB804921B039AC99DF44A2E2": {
+        "heatmap": {
+            "intensityField": "HotSpotCount",
+            "intensityScale": 3,
+            "blur": 11,
+            "radius": 16,
+            "minRadius": 7,
+            "minOpacity": 0.65
+        }
+    },
+    "0063FE5347284163B43E863FCFFA9161": {
+        "clusters": {
+            "maxClusterRadius": 50
+        }
+    }
+}
+```
+
+Ниже приведен список всех настроек слоёв:
+
+### Заголовок слоя (title)
+
+Используется, если необходимо перевести заголовок слоя.
+
+- `<String> eng` - in english
+- `<String> rus` - по-русски
+
+### Описание слоя (description)
+
+Используется, если необходимо перевести описание слоя.
+
+- `<String> eng` - in english
+- `<String> rus` - по-русски
+
+### Кластеры (clusters)
+
+[Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster)
+
+- `<Number> maxClusterRadius` - максимальный радиус кластеризации (охват), по умолчанию `80` (в пикселях)
+- `<Number> maxZoom` - пороговый зум, после которого к слою применяются кластеры
+- `<Boolean> showCoverageOnHover` - показывать ли полигон охвата кластера
+
+### Теплокарта (heatmap)
+
+[Leaflet.heat](https://github.com/Leaflet/Leaflet.heat)
+
+- `<String> intensityField` - наименование атрибута значение которого используется для расчета интенсивности точки
+- `<String> intensityScale` - множитель, используемый при расчете интенсивности точки
+- `<String> blur` - коэффициент размытия (по умолчанию `15`)
+- `<String> radius` - максимальный радиус точки теплокарты (по умолчанию `25`)
+- `<String> minRadius` -  минимальный радиус точки теплокарты
+- `<String> minOpacity` - минимальный коэффициент непрозрачности
