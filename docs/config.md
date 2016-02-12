@@ -138,10 +138,12 @@
 
 ### Контрол сторителлинга (ключ storytellingWidget)
 
-[nsGmx.StorytellingControl](https://github.com/ScanEx/GMXCommonComponents/tree/master/StorytellingControl)
+[nsGmx.StorytellingControl](https://github.com/ScanEx/GMXCommonComponents/tree/master/StorytellingControl),
+[nsGmx.StorytellingAccordeonControl](https://github.com/ScanEx/GMXCommonComponents/tree/master/StorytellingAccordeonControl)
 
 - `<String> type` - тип виджета (`accordeon` или `flipper`)
 - `<String> position` - если тип - `accordeon`, то этот параметр влияет на положение виджета (см. [Leaflet control positions](http://leafletjs.com/reference.html#control-'topleft'))
+- `<Number|Boolean> openBookmark` - номер закладки, которую нужно открывать по умолчанию (нумерация с 0). Если указано значение `false`, то ни одна из закладок не будет открыта.
 
 ## Настройки виджетов сайдбара
 
