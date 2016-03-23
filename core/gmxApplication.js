@@ -806,7 +806,7 @@ nsGmx.createGmxApplication = function(container, applicationConfig) {
             return false;
         }
 
-        var container = sidebarWidget.addTab('sidebarTab-layersTree', 'icon-layers');
+        var container = sidebarWidget.addTab('sidebarTab-layersTree', 'icon-layers', 10);
 
         var layersTreeWidget = new nsGmx.LayersTreeWidget(L.extend({
             isMobile: nsGmx.Utils.isMobile()
@@ -859,7 +859,7 @@ nsGmx.createGmxApplication = function(container, applicationConfig) {
         }
 
         if (config.app.bookmarksWidget && nsGmx.BookmarksWidget && rawTree && sidebar) {
-            var container = sidebar.addTab('sidebarTab-bookmarksWidget', 'icon-bookmark');
+            var container = sidebar.addTab('sidebarTab-bookmarksWidget', 'icon-bookmark', 20);
             var bookmarksWidget = new nsGmx.BookmarksWidget({
                 collection: new Backbone.Collection(JSON.parse(rawTree.properties.UserData && rawTree.properties.UserData).tabs)
             });
