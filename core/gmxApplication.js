@@ -702,28 +702,26 @@ nsGmx.createGmxApplication = function(container, applicationConfig) {
         var config = cm.get('config');
         var i18n = cm.get('i18n');
 
-        var translatableProperties = ['title', 'description'];
-        if (!config.layers) {
+        if (i18n.getLanguage() !== 'eng') {
             return null;
         }
-        for (var layerId in config.layers) {
-            var props = config.layers[layerId];
-            var layer = layersTree.find(layerId);
-            if (config.layers.hasOwnProperty(layerId) && layer) {
-                var layerProperties = layer.get('properties');
-                for (var i = 0; i < translatableProperties.length; i++) {
-                    var prop = translatableProperties[i];
-                    var lang = i18n.getLanguage();
-                    if (
-                        props[prop] &&
-                        props[prop][lang] &&
-                        layerProperties[prop]
-                    ) {
-                        layerProperties[prop] = props[prop][lang];
-                    }
-                }
+
+        layersTree.eachNode(function (node) {
+            var layerId = node.get('id');
+            var metaProps = node.get('properties').MetaProperties;
+            var configProps = config.layers && config.layers[layerId];
+            if (metaProps && metaProps['desc_eng']) {
+                node.get('properties').description = metaProps['desc_eng'].Value;
+            } else if (configProps && configProps['description'] && configProps['description'].eng) {
+                node.get('properties').description = configProps['description'].eng;
             }
-        }
+            if (metaProps && metaProps['title_eng']) {
+                node.get('properties').title = metaProps['title_eng'].Value;
+            } else if (configProps && configProps['title'] && configProps['title'].eng) {
+                node.get('properties').title = configProps['title'].eng;
+            }
+        });
+
         return null;
     });
 
