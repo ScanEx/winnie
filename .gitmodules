@@ -37,3 +37,6 @@
 [submodule "external/gmxDrawing"]
 	path = external/gmxDrawing
 	url = git@github.com:scanex/gmxDrawing.git
+[submodule "external/winnie-core"]
+	path = external/winnie-core
+	url = git@github.com:Kosmosnimki/winnie-core.git

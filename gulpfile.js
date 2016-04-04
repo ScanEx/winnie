@@ -147,9 +147,10 @@ var utils = {
 };
 
 var winnieCore = {
-    id: 'core',
-    srcDir: './core',
-    build: false
+    id: 'winnie-core',
+    srcDir: './external/winnie-core',
+    distDir: './dist',
+    build: true
 };
 
 var commonStyles = {
