@@ -7,4 +7,5 @@ bower_components
 /*.html
 docs/*.html
 !gallery.html
+!iframePreview.html
 web.config
