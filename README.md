@@ -1,4 +1,4 @@
-# "Winnie" - web maps constructor
+# "Winnie" - web-maps UI constructor
 
 ### Description
 Easy way to embed [GeoMixer](http://geomixer.ru/index.php/en) based maps into your applications or create a new ones with extended and configurable set of UI controls and widgets for [Leaflet](http://leafletjs.com/).
@@ -24,12 +24,12 @@ Easy way to embed [GeoMixer](http://geomixer.ru/index.php/en) based maps into yo
 
 ### Config reference
 
-https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md
+https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md (currently in Russian)
 
 ### Examples
 
 Some examples of what kind of applications can be created using "Winnie":
-check the ["gallery"](http://winnie.kosmosnimki.ru/gallery.html)
+check the ["Gallery"](http://winnie.kosmosnimki.ru/gallery.html)
 
 ### License
 
@@ -51,8 +51,13 @@ check the ["gallery"](http://winnie.kosmosnimki.ru/gallery.html)
 #### 2
 You can also download the library and customize the source code if you like <!--more documentation to come-->
 
+### Future plans
+- To make "Winnie" capable of interacting with any OGC-compatible backend
+- To finalize Winnie builder
+- To fork "mobile-first" approach of Winnie based widgets with more mobile adjustable components
+
 ### Support
-"Winnie" project was supported by WWF
+The project was supported by WWF
 
 ### Описание
 Простой способ создавать картографические приложения, используя API [GeoMixer](http://geomixer.ru). Поддерживает набор готовых контролов и виджетов для [Leaflet](http://leaflet.js)
@@ -60,7 +65,7 @@ You can also download the library and customize the source code if you like <!--
 ### Возможности
 - Встроенная визуализация данных с помощью Геомиксер (подробнее о платформе http://geomixer.ru)
 - Поддержка плагинов Leaflet
-- Виджеты ("Винни-виджеты"):
+- Виджеты:
   - Базовые карты
   - Дерево слоев
   - Storytelling ("картографические сюжеты")
@@ -78,18 +83,20 @@ https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md
 
 ### Лицензия
 
-© 2015 Kosmosnimki Ru Ltd. (SCANEX Group), published under [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+© 2015 Kosmosnimki Ru (SCANEX Group), открытая лицензия [Apache Public License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 ### Начало работы
 
 <b>Базовые сценарии:</b>
 
-#### 1
-
 1. Перейдите в [Редактор](http://winnie.kosmosnimki.ru) из проекта в GeoMixer, используя "Share" и выберите один из шаблонов интерфейса.
 2. Отредактируйте конфигурационный файл, если необходимо (см [config reference](https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md) для более детального описания)
 3. Сохраните финальную версию конфигурационного файла. Полученный пермалинк вставьте в свой сайт или блог, используя "код для вставки" (вы можете редактировать или возвращаться к предыдущей версии, используя сохраненный пермалинк)
 
+### Дальнейшие планы
+- Сделать "Winnie" backend- независимым, чтобы библиотека могла работать с любым бэкэндом
+- Доделать сборщик для локальной сборки
+- Уделить больше внимания UI-компонентам для мобильных устройств и адаптивному дизайну
  
 ### Поддержка
 
