@@ -1,6 +1,12 @@
 var gulp = require('gulp');
 var path = require('path');
 
+var es6Promise = {
+    id: 'es6-promise',
+    bowerComponent: 'git://github.com/jakearchibald/es6-promise.git',
+    distFiles: ['dist/es6-promise.js']
+};
+
 var jquery = {
     bowerComponent: 'jquery',
     distFiles: ['dist/jquery.js']
@@ -295,6 +301,7 @@ var shareIconControl = {
 };
 
 var coreComponents = [
+    es6Promise,
     jquery,
     jqueryui,
     handlebars,
