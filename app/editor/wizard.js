@@ -15,7 +15,7 @@ nsGmx.ConfigWizard = (function() {
         this._view.find('.apptypeSwitch-button').on('click', function(je) {
             this._view.find('.apptypeSwitch-button').removeClass('apptypeSwitch-button_active');
             $(je.currentTarget).addClass('apptypeSwitch-button_active');
-            this.trigger('switch', je.currentTarget.dataset.apptype);
+            this.trigger('switch', $(je.currentTarget).attr('data-apptype'));
         }.bind(this));
     };
 
