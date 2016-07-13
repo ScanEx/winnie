@@ -152,57 +152,59 @@
         return nsGmx.Auth.getAuthManager();
     });
 
-    cm.define('layoutManager', [], function(cm) {
-        var $rootContainer = $('.editor');
-        var $sidebarContainer = $('<div>').addClass('editor-sidebarContainer').appendTo($rootContainer);
-        var $viewerContainer = $('<div>').addClass('editor-viewerContainer').appendTo($rootContainer);
-        var $wizardContainer = $('<div>').addClass('editor-wizardContainer').appendTo($rootContainer);
+    cm.define('layoutManager', [], function(cm, cb) {
+        $(document).ready(function() {
+            var $rootContainer = $('.editor');
+            var $sidebarContainer = $('<div>').addClass('editor-sidebarContainer').appendTo($rootContainer);
+            var $viewerContainer = $('<div>').addClass('editor-viewerContainer').appendTo($rootContainer);
+            var $wizardContainer = $('<div>').addClass('editor-wizardContainer').appendTo($rootContainer);
 
-        $sidebarContainer.on('transitionend', function(je) {
-            if (je.originalEvent.propertyName === 'width') {
-                if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
-                    $viewerContainer.addClass('editor_sidebarExpanded');
-                    lm.trigger('sidebarchange', true);
+            $sidebarContainer.on('transitionend', function(je) {
+                if (je.originalEvent.propertyName === 'width') {
+                    if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
+                        $viewerContainer.addClass('editor_sidebarExpanded');
+                        lm.trigger('sidebarchange', true);
+                    }
                 }
-            }
-        });
+            });
 
-        var lm = _.extend({
-            getRootContainer: function() {
-                return $rootContainer;
-            },
-            getSidebarContainer: function() {
-                return $sidebarContainer.show();
-            },
-            getViewerContainer: function() {
-                return $viewerContainer.show();
-            },
-            expandSidebar: function() {
-                $sidebarContainer.addClass('editor_sidebarExpanded');
-            },
-            collapseSidebar: function() {
-                $sidebarContainer.removeClass('editor_sidebarExpanded');
-                $viewerContainer.removeClass('editor_sidebarExpanded');
-                this.trigger('sidebarchange', false);
-            },
-            toggleSidebar: function() {
-                if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
-                    this.collapseSidebar();
-                    return false;
-                } else {
-                    this.expandSidebar();
-                    return true;
+            var lm = _.extend({
+                getRootContainer: function() {
+                    return $rootContainer;
+                },
+                getSidebarContainer: function() {
+                    return $sidebarContainer.show();
+                },
+                getViewerContainer: function() {
+                    return $viewerContainer.show();
+                },
+                expandSidebar: function() {
+                    $sidebarContainer.addClass('editor_sidebarExpanded');
+                },
+                collapseSidebar: function() {
+                    $sidebarContainer.removeClass('editor_sidebarExpanded');
+                    $viewerContainer.removeClass('editor_sidebarExpanded');
+                    this.trigger('sidebarchange', false);
+                },
+                toggleSidebar: function() {
+                    if ($sidebarContainer.hasClass('editor_sidebarExpanded')) {
+                        this.collapseSidebar();
+                        return false;
+                    } else {
+                        this.expandSidebar();
+                        return true;
+                    }
+                },
+                getSidebarState: function() {
+                    return $sidebarContainer.hasClass('editor_sidebarExpanded');
+                },
+                getWizardContainer: function() {
+                    return $wizardContainer;
                 }
-            },
-            getSidebarState: function() {
-                return $sidebarContainer.hasClass('editor_sidebarExpanded');
-            },
-            getWizardContainer: function() {
-                return $wizardContainer;
-            }
-        }, Backbone.Events);
+            }, Backbone.Events);
 
-        return lm;
+            cb(lm);
+        })
     });
 
     cm.define('appConfigModel', ['permalinkConfig', 'defaultConfig', 'winnieConfig'], function(cm) {
@@ -330,7 +332,7 @@
                     aceEditor.selection.clearSelection();
                 }.bind(this));
             },
-            updateModel: function () {
+            updateModel: function() {
                 if (jsonIsValid(this._codeEditor.getValue())) {
                     this.options.appConfigModel.setValue(JSON.parse(this._codeEditor.getValue()));
                 } else {

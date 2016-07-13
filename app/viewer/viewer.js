@@ -51,17 +51,19 @@
         }
     });
 
-    cm.define('layoutManager', [], function(cm) {
-        var mapEl = L.DomUtil.create('div', 'mapContainer', document.body);
-        var editButtonEl = L.DomUtil.create('div', 'editButtonContainer', document.body);
-        return {
-            getMapContainer: function() {
-                return mapEl;
-            },
-            getEditButtonContainer: function() {
-                return editButtonEl;
-            }
-        }
+    cm.define('layoutManager', [], function(cm, cb) {
+        $(document).ready(function() {
+            var mapEl = L.DomUtil.create('div', 'mapContainer', document.body);
+            var editButtonEl = L.DomUtil.create('div', 'editButtonContainer', document.body);
+            cb({
+                getMapContainer: function() {
+                    return mapEl;
+                },
+                getEditButtonContainer: function() {
+                    return editButtonEl;
+                }
+            })
+        });
     });
 
     cm.define('mapApplicationConstructor', ['permalinkConfig', 'layoutManager', 'winnieConfig'], function(cm, cb) {
