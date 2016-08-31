@@ -40,3 +40,6 @@
 [submodule "external/winnie-core"]
 	path = external/winnie-core
 	url = git@github.com:Kosmosnimki/winnie-core.git
+[submodule "external/winnie-build"]
+	path = external/winnie-build
+	url = git@github.com:Kosmosnimki/winnie-build.git
