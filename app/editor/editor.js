@@ -496,7 +496,6 @@
             cm.get('viewer').getCm().then(function(cm) {
                 var macm = window.macm = cm;
                 window.lt = macm.get('layersTree');
-                window.ld = new nsGmx.LayersDebugger(macm.get('layersTree'));
             });
         }
     });
