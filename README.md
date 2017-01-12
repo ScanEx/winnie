@@ -24,7 +24,7 @@ Easy way to embed [GeoMixer](http://geomixer.ru/index.php/en) based maps into yo
 
 ### Config reference
 
-https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md (currently in Russian)
+https://github.com/scanex/winnie/blob/master/docs/config.md (currently in Russian)
 
 ### Examples
 
@@ -75,7 +75,7 @@ The project was supported by WWF
 
 ### Справочник конфиг-файла
 
-https://github.com/Kosmosnimki/winnie/blob/master/docs/config.md
+https://github.com/scanex/winnie/blob/master/docs/config.md
 
 ### Примеры
 
