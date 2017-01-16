@@ -146,6 +146,11 @@
 - `<String> position` - если тип - `accordeon`, то этот параметр влияет на положение виджета (см. [Leaflet control positions](http://leafletjs.com/reference.html#control-'topleft'))
 - `<Number|Boolean> openBookmark` - номер закладки, которую нужно открывать по умолчанию (нумерация с 0). Если указано значение `false`, то ни одна из закладок не будет открыта.
 
+### Слайдер прозрачности (ключ transparencySliderWidget)
+[nsGmx.StorytellingControl](https://github.com/ScanEx/GMXCommonComponents/TransparencySliderWidget)
+
+*Параметры отсутствуют*
+
 ## Настройки виджетов сайдбара
 
 Ниже приведен список виджетов, которые автоматически встраиваются в сайдбар. Они описываются также в секции `app` и для них справедливы те же примечания, что и для контролов.
