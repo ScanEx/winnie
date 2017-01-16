@@ -147,7 +147,7 @@
 - `<Number|Boolean> openBookmark` - номер закладки, которую нужно открывать по умолчанию (нумерация с 0). Если указано значение `false`, то ни одна из закладок не будет открыта.
 
 ### Слайдер прозрачности (ключ transparencySliderWidget)
-[nsGmx.StorytellingControl](https://github.com/ScanEx/GMXCommonComponents/TransparencySliderWidget)
+[nsGmx.TransparencySliderWidget](https://github.com/ScanEx/GMXCommonComponents/TransparencySliderWidget)
 
 *Параметры отсутствуют*
 
