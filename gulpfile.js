@@ -40,6 +40,13 @@ var authManager = {
     build: true
 };
 
+var transparencySliderWidget = {
+    id: 'TransparencySliderWidget',
+    srcDir: './external/GMXCommonComponents/TransparencySliderWidget',
+    distDir: './build',
+    build: true
+};
+
 // var coreComponents = [
 //     es6Promise,
 //     jquery,
