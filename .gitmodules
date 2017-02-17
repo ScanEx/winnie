@@ -43,3 +43,6 @@
 [submodule "external/winnie-build"]
 	path = external/winnie-build
 	url = git@github.com:Kosmosnimki/winnie-build.git
+[submodule "external/ComponentsManager"]
+	path = external/ComponentsManager
+	url = git@github.com:Scanex/ComponentsManager
